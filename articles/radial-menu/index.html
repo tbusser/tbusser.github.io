@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="This article explains how to create a mixin, SCSS and LESS, to create the CSS for a radial menu">
+	
+	<!-- Open Graph metatags-->
+	<meta property="article:author" content="https://www.facebook.com/thijsbusser">
+	<meta property="article:section" content="development">
+		
+	<meta property="article:tag" content="CSS">
+			<meta property="article:tag" content="LESS">
+			<meta property="article:tag" content="SCSS">
+			<meta property="article:tag" content="Tutorial">
+			
+	<meta property="og:description" content="This article explains how to create a mixin, SCSS and LESS, to create the CSS for a radial menu">
+	<meta property="og:image" content="http://tbusser.net/static/img/post/radial-menu/menu-item-open.png">
+		
+	<meta property="og:site_name" content="Something Awesome | Thijs Busser's Blog">
+	<meta property="og:title" content="Radial Menu mixin | Something Awesome">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="http://tbusser.net/articles/radial-menu/index.html">
+
+	<!-- Twitter card -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:creator" content="@tbusser">
+	<title>Radial Menu mixin | Something Awesome</title>
+	<!-- The HTML5Shiv inlined as recommended by Paul Irish in this post: https://github.com/Modernizr/Modernizr/issues/878#issuecomment-41448059 -->
+	<script>
+		!function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=t.elements;return"string"==typeof a?a.split(" "):a}function n(a,b){var c=t.elements;"string"!=typeof c&&(c=c.join(" ")),"string"!=typeof a&&(a=a.join(" ")),t.elements=c+" "+a,s(b)}function o(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function p(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=o(c));var g;return g=d.cache[a]?d.cache[a].cloneNode():f.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!g.canHaveChildren||e.test(a)||g.tagUrn?g:d.frag.appendChild(g)}function q(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||o(a);for(var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;g>e;e++)d.createElement(f[e]);return d}function r(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return t.shivMethods?p(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-:]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(t,b.frag)}function s(a){a||(a=b);var c=o(a);return!t.shivCSS||g||c.hasCSS||(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||r(a,c),a}var g,k,c="3.7.2",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,h="_html5shiv",i=0,j={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){g=!0,k=!0}}();var t={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:s,createElement:p,createDocumentFragment:q,addElements:n};a.html5=t,s(b)}(this,document);
+	</script>
+
+	<link rel="stylesheet" href="http://tbusser.net/static/css/site.css">
+	
+	<link rel="stylesheet" href="http://tbusser.net/static/css/post/radial-menu.css">
+			
+	<!--[if lte IE 9]>
+	<script src="http://tbusser.net/static/js/shims/classList.js"></script>
+	<![endif]-->
+</head>
+
+<body id="scroll-top-target" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+		<ul class="skip-links">
+		<li><a href="#navigation-skip">Skip to navigation</a></li>
+		<li><a href="#content-skip">Skip to content</a></li>
+		<li><a href="#comments-skip">Skip to comments</a></li>
+	</ul>
+	<!--[if lte IE 9]>
+	<div class="high-attention-warning">
+		The browser you are using might not give you the best experience on this website. <a href="http://browsehappy.com/">Please upgrade</a> to a more recent web browser for a better experience.
+	</div>
+<![endif]-->
+		<header class="site-header" role="banner">
+		<a href="/">
+		<figure>
+			<img src="" alt="Headshot of Thijs Busser" class="headshot" data-is-responsive data-has-retina data-src="/static/img/headshot{modifier}-{breakpoint}.jpg">
+			<noscript>
+				<img src="/static/img/headshot2x-xl.jpg" alt="Headshot of Thijs Busser" class="headshot">
+			</noscript>
+		</figure>
+		<div class="alpha">
+				Something Awesome
+			</div>
+		</a>
+		<div>by Thijs Busser, front-end developer</div>
+	</header>
+	<main role="main" id="content-skip" tabindex="-1">
+		<h1 itemprop="name">Radial Menu mixin</h1>
+		<aside class="profile meta-data">
+			<h2>Article meta data</h2><dl>
+	<dt>Published on:</dt>
+	
+	<dd><time itemprop="datePublished" datetime="2014-02-21T00:00+01:00">Feb 21st, 2014</time></dd>
+
+	<dt>Comments:</dt><dd><a href="http://tbusser.net/articles/radial-menu/#disqus_thread"></a></dd>
+
+<dt>Tags:</dt><dd>
+			<a href="/tags/css/" rel="tag" title="See all articles tagged with CSS">CSS</a>
+		</dd><dd>
+			<a href="/tags/less/" rel="tag" title="See all articles tagged with LESS">LESS</a>
+		</dd><dd>
+			<a href="/tags/scss/" rel="tag" title="See all articles tagged with SCSS">SCSS</a>
+		</dd><dd>
+			<a href="/tags/tutorial/" rel="tag" title="See all articles tagged with Tutorial">Tutorial</a>
+		</dd>
+</dl><meta itemprop="keywords" content="CSS LESS SCSS Tutorial">
+
+		</aside>
+	<section>
+	<h2>Introduction</h2>
+	<p class="bigger-text" itemprop="description">
+		In this article we will be creating a mixin to create the styles for a radial menu. The idea for the radial menu is not my own, I came across a demonstration of <a href="http://permalightnyc.com/experiments/radial-menu" target="_blank">a radial menu by Permalight NYC</a> and got inspired. The mixin will be used to create the styles for our menu elements and I will show how you can easily change the way the menu fans out just by playing with some custom data attributes. The examples are in LESS but at the end you can download the finished mixin in either LESS or SCSS format.
+	</p>
+
+	<section>
+		<h3>Why reinvent the wheel?</h3>
+		<p>
+			That is a fair enough question. The Permalight menu looks good, in fact our end result will look very similar, but I think there is some room for improvement. Let me list the issues I will address in version.
+		</p>
+		<ul>
+			<li>
+				<strong>The menu should be usable in Internet Explorer 8</strong>
+				<p>
+					There are still quite a lot of people browsing the web with Internet Explorer 8. I think the menu should be functional on Internet Explorer 8, it doesn't have to look as good as in a more modern browser.
+				</p>
+			</li>
+			<li>
+				<strong>Easier settings</strong>
+				<p>
+					The version I based mine on has two variables, distance and factor, which determine the size of the menu when opened. I find this a little too difficult to work with. I want to be able to just specify the radius of the circle, it seems easier that way to me to use the mixin.
+				</p>
+			</li>
+			<li>
+				<strong>Decouple the HTML element order from the order of the menu</strong>
+				<p>
+					I want to be able to easily shuffle the menu items and not having to alter their order in which they appear in the HTML itself. Perhaps the items don't make that much sense out of order when read out by a screen reader.
+				</p>
+			</li>
+			<li>
+				<strong>Make it easy to alter the way the menu opens</strong>
+				<p>
+					Sometimes you want the 1st element on top, other times you want it to be on the left. This should be easy to accomplish and not require a rewrite of the mixin.
+				</p>
+			</li>
+			<li>
+				<strong>Make it leaner</strong>
+				<p>
+					Why use a couple of HTML elements to make a menu item when only one HTML element will do? Lean &amp; mean is the name of the game.
+				</p>
+			</li>
+			<li>
+				<strong>The menu should be usable for people using screen readers or the keyboard</strong>
+				<p>
+					The menu we create should be fully usable when you use the tab key to navigate the website or when you use a screen reader to get around.
+				</p>
+			</li>
+		</ul>
+	</section>
+</section>
+
+<section>
+	<h2>Prerequisites</h2>
+	<p>
+		If you want to recreate the mixin from the tutorial you will need the following to succeed:
+	</p>
+	<ul>
+		<li>
+			<strong>A LESS or SASS compiler</strong>
+			<p>
+				As stated in the introduction, at the end I offer a download for both a LESS and a SASS version. When you want to use the LESS version you will need version 1.4 or later.
+			</p>
+		</li>
+		<li>
+			<strong>HTML, CSS &amp; and some JavaScript skills</strong>
+			<p>
+				This shouldn't come as a surprise, you need at least a basic knowledge of HTML and CSS / SASS. The SASS code that I wrote for this mixin will be explained in the article but a basic understanding of what SASS is and how it works helps to understand the examples.
+			</p>
+		</li>
+		<li>
+			<strong>High-school math</strong>
+			<p>
+				(Un)fortunately you can't make a radial menu without some basic trigonometry that you might have had in High-school. I'll do my best to explain the math I use the best I can. If you just want to use a radial menu you can skip the math and just enjoy the end result.
+			</p>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h2>Let's get started!</h2>
+	<p>
+		Okay, time to get down to business. In this tutorial we will use the mixin to create a menu with a maximum of 8 items. Please use 'inspect element' (or your browser's equivalent) on the examples to see the HTML that was used to create them. We'll just number the menu items so we can more easily see what is going on once we start playing around with them.
+	</p>
+	<figure>
+		<div class="example-container example1">
+			<button type="button" class="radial-menu-item">1</button>
+			<button type="button" class="radial-menu-item">2</button>
+			<button type="button" class="radial-menu-item">3</button>
+			<button type="button" class="radial-menu-item">4</button>
+			<button type="button" class="radial-menu-item">5</button>
+			<button type="button" class="radial-menu-item">6</button>
+			<button type="button" class="radial-menu-item">7</button>
+			<button type="button" class="radial-menu-item">8</button>
+		</div>
+		<figcaption class="example">Say hello to the our lovely items</figcaption>
+	</figure>
+	<p>
+		If you inspect the items above you will see it are just 8 buttons, nothing fancy.
+	</p>
+
+	<section>
+		<h3>Collapsed menu</h3>
+		<p>
+			First what we need to do is position all items directly on top of each other. This should be easy enough, we'll just give the buttons a <code>position:absolute</code>. As a result the container element in which the buttons are positioned no longer has a width or height.
+		</p>
+		<p>
+			We can think of our dimensionless div as the center point of the radial menu. It will help us later on when the buttons are centered on the div element. To center the buttons we need to shift it to the left and top.
+		</p>
+		<figure>
+			<div class="example-container">
+				<div class="radial-menu-small example2">
+					<button type="button" class="radial-menu-item">1</button>
+					<button type="button" class="radial-menu-item">2</button>
+					<button type="button" class="radial-menu-item">3</button>
+					<button type="button" class="radial-menu-item">4</button>
+					<button type="button" class="radial-menu-item">5</button>
+					<button type="button" class="radial-menu-item">6</button>
+					<button type="button" class="radial-menu-item">7</button>
+					<button type="button" class="radial-menu-item">8</button>
+				</div>
+			</div>
+			<figcaption class="example">And now you see one, too bad it's the wrong one</figcaption>
+		</figure>
+		<aside>
+			<h4>Accessibility</h4>
+			<p>
+				I you have been using the tab key to navigate through the website you will undoubtedly have noticed that you had to tab 8 times to get past example 2 without seeing the focus outline move. That was annoying, right? Don't worry, we will be fixing this a little later on.
+			</p>
+		</aside>
+		<p>
+			When you inspect the example above you will see the div with the class <code>radial-menu-small</code> is in the center of the buttons. The diameter of our buttons is 50px, making the buttons 50px by 50px. The radius is just half of that, 25px in this case. This is the number of pixels we had to shift the buttons up and to the left by, to center them on the div element.
+		</p>
+		<p>
+			Another thing to notice is that the div element has been positioned with some margin and has been given a bottom padding. Because the menu items are positioned absolute the parent element doesn't get a dimension. By using the margin and padding we make sure the div element takes up enough space to show the menu properly.
+		</p>
+		<p>
+			Okay, that takes care of that but now the last menu item is on top instead of on the bottom. Not quite what we want, is it? We will have to fix this.
+		</p>
+	</section>
+
+	<section>
+		<h3>Mixin for the z-index</h3>
+		<p>
+			The problem of the wrong button being on top is easy enough to counter. We can order the HTML elements the other way around or we can play with the z-index of the menu items to change the order in which they are displayed. Once we start animating the menu we can't get away with just setting the z-index for the first item as it will reveal the items in the wrong order. Instead of writing eight class to set the z-indexes we will create a small mixin to help us.
+		</p>
+		<figure class="break-out">
+			<pre class="highlight"><code class="hljs css">
+<span class="hljs-comment">/*  The name of our mixin is radial-menu and it takes a single parameter, the
+    number of menu items we have. */</span>
+<span class="hljs-class">.radial-menu</span>(<span class="hljs-at_rule">@<span class="hljs-keyword">items)</span> </span>{
+    <span class="hljs-comment">/*  This is another small mixin with a single parameter, index, with a LESS guard.
+        This mixin will be executed only when the value of index is bigger than -1. */</span>
+    <span class="hljs-class">.radial-menu-items</span> (<span class="hljs-at_rule">@<span class="hljs-keyword">index)</span> when (@index &gt; -<span class="hljs-number">1</span>) </span>{
+        <span class="hljs-comment">/*  Here we create a CSS class with an attribute selector for data-index. Since
+            we're using a custom attribute it is prefixed with 'data-' and it uses the
+            index parameter that was used to call the mixin. */</span>
+        <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-comment">/*    In this line we set the z-index property. We're substracting the value
+                of index from 100, assuming no one will make a menu with more than a
+                100 items. */</span>
+            <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> (<span class="hljs-number">100</span> - @index)</span></span>;
+        <span class="hljs-rule">}</span></span>
+        <span class="hljs-comment">/*  Here we call the radial-menu-items mixin again but this time with the value
+            of index decreased by 1. Yup, we're using recursion to generate all the
+            styles we need. Since the guard prevents the mixin from executing when the
+            value if index drops below 0 it will stop the recursion. In some examples
+            you will see something like this:
+                .radial-menu-items (@index) when (@index = -1){ }
+            but this it totally uncessary. */</span>
+        <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">index</span> - <span class="hljs-number">1</span>))</span>;
+    }
+    <span class="hljs-comment">/*  Within the radial-menu we need to kick off the radial-menu-items mixin. We pass
+        items - 1 as the first value because we tell it we have 8 items but the
+        radial-menu-items mixin is 0 based. We could make it 1 based but we're so used to
+        the first element having an index of 0, why mess with that? */</span>
+    <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">items</span> - <span class="hljs-number">1</span>))</span>;
+}
+            </code></pre>
+			<figcaption class="listing">z-index mixin</figcaption>
+		</figure>
+		<p>
+			Now we can call the mixin like this:
+		</p>
+		<code class="css">@include radial-menu(8);</code>
+		<p>It will output the following CSS:</p>
+		<pre class="highlight"><code class="hljs css"><span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="7"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">93</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="6"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">94</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="5"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">95</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="4"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">96</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="3"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">97</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="2"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">98</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="1"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">99</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="0"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">100</span></span></span>; <span class="hljs-rule">}</span></span></code></pre>
+		<p>
+			Now we need to give our menu items the <code>data-index</code> attribute and fill this attribute with the sequential position where we want our item to be:
+		</p>
+		<figure>
+			<div class="example-container">
+				<div class="radial-menu-small example3">
+					<button type="button" class="radial-menu-item" data-index="0">1</button>
+					<button type="button" class="radial-menu-item" data-index="1">2</button>
+					<button type="button" class="radial-menu-item" data-index="2">3</button>
+					<button type="button" class="radial-menu-item" data-index="3">4</button>
+					<button type="button" class="radial-menu-item" data-index="4">5</button>
+					<button type="button" class="radial-menu-item" data-index="5">6</button>
+					<button type="button" class="radial-menu-item" data-index="6">7</button>
+					<button type="button" class="radial-menu-item" data-index="7">8</button>
+				</div>
+			</div>
+			<figcaption class="example">The triumphant return of item 1</figcaption>
+		</figure>
+	</section>
+</section>
+
+<section>
+	<h2>Taking position</h2>
+	<p>
+		We will always need the menu items to be positioned absolutely, it would make sense to add this to our mixin. We also want the menu items to be centered on the top left corner of the parent element when the menu is closed, another thing to add to the mixin. But in order to be able to position the menu items the mixin needs to know how wide they are. Well, it really just need to know the radius and not the diameter in order to position the menu items. We will need to introduce another parameter, <code>item-radius</code>.
+	</p>
+	<p>
+		This is also a good moment to point out something about the radial menu, it is meant to work with circular or square menu items. It can be altered to work properly with rectangular items but that is outside the scope of this tutorial.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs css">
+<span class="hljs-class">.radial-menu</span>(<span class="hljs-at_rule">@<span class="hljs-keyword">items,</span> @item-radius) </span>{
+    <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    <span class="hljs-class">.radial-menu-items</span>(<span class="hljs-at_rule">@<span class="hljs-keyword">index)</span> when (@index &gt; -<span class="hljs-number">1</span>) </span>{
+        <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> (<span class="hljs-number">100</span> - @index)</span></span>;
+        <span class="hljs-rule">}</span></span>
+        <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">index</span> - <span class="hljs-number">1</span>))</span>;
+    }
+    <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">items</span> - <span class="hljs-number">1</span>))</span>;
+}
+            </code></pre>
+		</div>
+		<figcaption class="listing">Adding the position of the menu items to the mixin</figcaption>
+	</figure>
+	<p>
+		Our menu items are 50 by 50 pixles, so the radius is 25 pixels. Now we can call the mixin like this:
+	</p>
+	<pre class="highlight"><code class="hljs css"><span class="hljs-at_rule">@<span class="hljs-keyword">radial-menu(8,</span> <span class="hljs-number">25</span>)</span>;</code></pre>
+	<p>
+		It will output the following CSS:
+	</p>
+	<pre class="highlight"><code class="hljs css"><span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> -<span class="hljs-number">25</span>px</span></span>; <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>; <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> -<span class="hljs-number">25</span>px</span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="7"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">93</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="6"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">94</span></span></span>; <span class="hljs-rule">}</span></span>
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="5"]</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">95</span></span></span>; <span class="hljs-rule">}</span></span>
+...</code></pre>
+
+	<section>
+		<h3>Now you see me, now you don't</h3>
+		<p>
+			Remember how I pointed out that it took 8 times hitting the tab key to get past the radial menu in its closed state? I promised we would do something about, this is where we will fix this. By default we will give our menu items a <code>visibility</code> value of <code>hidden</code>. In the mixin we will reset the <code>visibility</code> value of the item with <code>data-index=0</code>.
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs css">
+<span class="hljs-class">.radial-menu</span>(<span class="hljs-at_rule">@<span class="hljs-keyword">items,</span> @item-radius, @menu-radius) </span>{
+    <span class="hljs-at_rule">@<span class="hljs-keyword">step-in-radians:</span> ((<span class="hljs-number">360</span> / @items) * (<span class="hljs-function">pi()</span> / <span class="hljs-number">180</span>))</span>;
+
+    <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-comment">/*  We will hide the menu items by default, this will hide them from the
+            tab key. */</span>
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-comment">/*  The first item should always be visible. */</span>
+    <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="0"]</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    <span class="hljs-comment">/*  When the menu is open all items need to be visible. */</span>
+    &amp;<span class="hljs-class">.open</span> &gt; <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    <span class="hljs-class">.radial-menu-items</span> (<span class="hljs-at_rule">@<span class="hljs-keyword">index)</span> when (@index &gt; -<span class="hljs-number">1</span>) </span>{
+        <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> (<span class="hljs-number">100</span> - @index)</span></span>;
+        <span class="hljs-rule">}</span></span>
+
+        <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">index</span> - <span class="hljs-number">1</span>))</span>;
+    }
+    <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">items</span> - <span class="hljs-number">1</span>))</span>;
+}
+                </code></pre>
+			</div>
+			<figcaption class="listing">Showing just the first item</figcaption>
+		</figure>
+		<p>
+			Visually you will not see much of a difference between the example below and the previous example. If you've been using the keyboard you will notice a big difference, it will now just take a single stroke of the tab key to move past our closed menu.
+		</p>
+		<figure>
+			<div class="example-container">
+				<div class="radial-menu-small example4">
+					<button type="button" class="radial-menu-item" data-index="0">1</button>
+					<button type="button" class="radial-menu-item" data-index="1">2</button>
+					<button type="button" class="radial-menu-item" data-index="2">3</button>
+					<button type="button" class="radial-menu-item" data-index="3">4</button>
+					<button type="button" class="radial-menu-item" data-index="4">5</button>
+					<button type="button" class="radial-menu-item" data-index="5">6</button>
+					<button type="button" class="radial-menu-item" data-index="6">7</button>
+					<button type="button" class="radial-menu-item" data-index="7">8</button>
+				</div>
+			</div>
+			<figcaption class="example">Now extra keyboard friendly</figcaption>
+		</figure>
+	</section>
+</section>
+
+<section>
+	<h2>Opening up the menu</h2>
+	<p>
+		That took care of the menu in its closed state, time to work on its opened state. We will have to calculate where each menu item needs to be when the user clicks on the menu and opens it. We will distribute the menu items evenly, this makes it easy to calculate the angle between the menu items. We can simply divide 360 degrees by the number of items to get the angle between each menu item.
+	</p>
+	<p>
+		Once we have the angle we need at least one other piece of information in order to be able to calculate each point, we need to know the radius of the circle on which the menu items will be positioned. With the angle and the radius known we can use the <code>cos</code> and <code>sin</code> functions to calculate the x and y coordinates for each menu item. Let's see what that will look like in our mixin.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs css">
+<span class="hljs-comment">/*  We've added yet another parameter to our mixin, menu-radius. This lets us
+    specify how big the menu should be when it is opened. It is the distance from the
+    center of the menu items when the menu is closed to the center of the menu items
+    when the menu is opened. */</span>
+<span class="hljs-class">.radial-menu</span>(<span class="hljs-at_rule">@<span class="hljs-keyword">items,</span> @item-radius, @menu-radius) </span>{
+    <span class="hljs-comment">/*  Here we calculate the angle between the menu items by dividing 360 degrees with
+        the number of menu items. Because the default unit for the cos and sin
+        functions is radians we will convert the degrees to radians here. */</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">step-in-radians:</span> ((<span class="hljs-number">360</span> / @items) * (<span class="hljs-function">pi()</span> / <span class="hljs-number">180</span>))</span>;
+
+    <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="0"]</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    &amp;<span class="hljs-class">.open</span> &gt; <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    <span class="hljs-class">.radial-menu-items</span> (<span class="hljs-at_rule">@<span class="hljs-keyword">index)</span> when (@index &gt; -<span class="hljs-number">1</span>) </span>{
+        <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> (<span class="hljs-number">100</span> - @index)</span></span>;
+        <span class="hljs-rule">}</span></span>
+
+        <span class="hljs-comment">/*  This is our new CSS class for when the menu is opened. We'll be applying
+            the class active on the container element which will trigger this class to
+            be applied. Note that this style doesn't use the attribute data-index but
+            is using data-position instead. This will be important later on. */</span>
+        <span class="hljs-class">.active</span> &gt; <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-position="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-comment">/*  On this line we will calculate the angle for the current index by
+                multiplying it with value we calculated earlier and stored in
+                step-in-radians. We substract pi() / 2 to shift the angle 90 degrees
+                counterclockwise. This will result in index 0 being positioned at
+                12 o'clock instead of 3 o'clock. */</span>
+            <span class="hljs-rule">@<span class="hljs-attribute">angle </span>:<span class="hljs-value"> ((@step-in-radians * @index) - (<span class="hljs-function">pi()</span>/<span class="hljs-number">2</span>))</span></span>;
+            <span class="hljs-comment">/*  The left value is calculated by taking the value of the cosine function
+                for the angle of the menu item, this will produce a number between 0
+                and 1. Now we multiply this with the radius of the open menu, this will
+                give us the center point of the menu item on the x-axis. Last but not
+                least we subtract the radius of the menu item, this is because we
+                specify the left point of the element and not the center point of the
+                element with CSS. */</span>
+            <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-function">unit((<span class="hljs-function">round((<span class="hljs-function">cos(@angle)</span> * @menu-radius)</span>, <span class="hljs-number">0</span>)</span> - @item-radius), px)</span></span>;
+            <span class="hljs-comment">/*  This is very simular to the last line, except now we do it for the top
+                value of the menu item. Instead of cos we use sin. */</span>
+            <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-function">unit((<span class="hljs-function">round((<span class="hljs-function">sin(@angle)</span> * @menu-radius)</span>, <span class="hljs-number">0</span>)</span> - @item-radius), px)</span></span>;
+        <span class="hljs-rule">}</span></span>
+
+        <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">index</span> - <span class="hljs-number">1</span>))</span>;
+    }
+    <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">items</span> - <span class="hljs-number">1</span>))</span>;
+}
+            </code></pre>
+		</div>
+		<figcaption class="listing">Calculating where each menu item should go</figcaption>
+	</figure>
+
+	<aside>
+		<h3>SASS and trigonometry</h3>
+		<p>
+			Unlike LESS version 1.4 and later, SASS doesn't have trigonometry functions like sin and cos out of the box. If you use Compass these functions are available to you. Since I don't use Compass I've added a couple of helper functions in my mixin for the sines and cosines functions. You can see them in the final version of the mixin that you can download at the end of the article.
+		</p>
+	</aside>
+	<p>
+		The reason the top and left values will work for us is because everything is calculated around the top left corner of the nav element. This is position (0, 0) as far as our menu items are concerned. Say we want our menu to have a radius of 70 pixels when opened.  Now we can call the mixin like this:
+	</p>
+	<pre class="highlight"><code class="hljs css"><span class="hljs-at_rule">@<span class="hljs-keyword">radial-menu(8,</span> <span class="hljs-number">25</span>, <span class="hljs-number">70</span>)</span>;</code></pre>
+	<p>
+		Now if we set the class <code>open</code> on the container element and we give each menu item the attribute <code>data-position</code> with its index as the value we get the following result. You can click on menu item 1 to open or close the menu.
+	</p>
+	<figure>
+		<div class="break-out">
+			<div class="example-container">
+				<div class="radial-menu-normal open example5">
+					<button type="button" class="radial-menu-item" data-index="0" data-position="0">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="1">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="2">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="3">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="4">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="5">6</button>
+					<button type="button" class="radial-menu-item" data-index="6" data-position="6">7</button>
+					<button type="button" class="radial-menu-item" data-index="7" data-position="7">8</button>
+				</div>
+			</div>
+		</div>
+		<figcaption class="example">Everything in its right place</figcaption>
+	</figure>
+	<p>
+		As you may have noticed the margin and padding on the menu container has changed. Because the menu can now be opened up we need some extra room to display the menu in all its glory.
+	</p>
+</section>
+
+<section>
+	<h2>So, how does the math work?</h2>
+	<p>
+		This is the part you can easily skip if you want to. I will do my best to explain the math I've used to calculate where each menu item should go when the menu is opened up. It is not crucial to understanding the mixin.
+	</p>
+	<p>
+		As said before, the top left corner of the parent element for the menu items is the center of the radial menu. In Example 5 this is the div element with the class <code>radial-menu-normal</code>. For as far as the menu items are concerned this is coordinate (0, 0), as illustrated with the white rectangle in Image 1.
+	</p>
+	<div class="inline-figure">
+		<figure>
+			<div data-lazy-load data-has-retina alt="The center coordinate is shown as a white rectangle, the menu radius is visualized by the black circle." data-src="/static/img/post/radial-menu/menu-item{modifier}.png" style="width:280px;"></div>
+			<noscript>
+				<img src="/static/img/post/radial-menu/menu-item.png" alt="" style="width:280px;">
+			</noscript>
+			<figcaption class="image">The center coordinate is shown as a white rectangle, the menu radius is visualized by the black circle.</figcaption>
+		</figure>
+		<p>
+			The parameter <code>menu-radius</code> is the way we tell the mixin how far from the center coordinate we want our menu items to be when the menu is opened up. With a menu radius of 70 we are saying we want the <strong>center</strong> of the menu items to be 70 pixels away from the center of the radial menu. In Image 1 one the menu radius is visualized with the black circle around the menu item, this is where the center of the menu items will be placed when the menu is opened.
+		</p>
+	</div>
+
+	<section class="inline-figure">
+		<h3>Calculating the position</h3>
+		<p>
+			Per menu item we need to calculate where on the circle the menu item should be when the menu is opened. Since the mixin knows the number of items we can easily calculate the angle between the items.
+		</p>
+		<figure>
+			<div data-lazy-load data-has-retina alt="The menu item in its open position. The slanted side of the rectangle is 70 pixels long." data-src="/static/img/post/radial-menu/menu-item-open{modifier}.png" style="width:280px;"></div>
+			<noscript>
+				<img src="/static/img/post/radial-menu/menu-item-open.png" alt="" style="width:280px;">
+			</noscript>
+			<figcaption class="image">The menu item in its open position. The slanted side of the rectangle is 70 pixels long.</figcaption>
+		</figure>
+		<p>
+			The distance from the center of the radial menu to the center of the menu item is 70 pixels. We know the angle of the menu item, in our example we have 8 menu items and this position has an angle of 45 degrees. With these two variables known we have all the information we need to calculate how far we need to move the menu item on
+			the x- and y-axis. All we need for this are the sines and cosines functions.
+		</p>
+		<section>
+			<h4>The vertical position</h4>
+			<p>
+				The menu item at the top of the opened menu has an angle of 0 degrees. With the sines function we can calculate the shift of the menu item on the y-axis. The sines of 0 degrees is -1. The negative value works well for us as we need to position the menu item above its parent, in HTML this requires a negative top value. Of course -1 is too little a shift, we need to multiply it with the menu radius to get the proper value of -70.
+			</p>
+			<p>
+				If you have been paying attention you know the value of -70 isn't the correct value for the top position of the menu item. We've just calculated the center coordinate for the menu item, not the top value for the HTML element. To get the top position of the HTML element we need to place it half its height higher. Our menu items are 50px heigh, to get the center of the menu item at -70px we need to place the menu item another 25px away from the parent element. In our case the top value for the menu item at angle 0 degrees is -95px.
+			</p>
+		</section>
+		<section>
+			<h4>The horizontal position</h4>
+			<p>
+				Where we need the sines function for the vertical position we need the cosines for the horizontal position. If we take again the menu item at the top of the opened menu we know the angle is 0 degrees. The cosines value of 0 is 0, which is what you'd expect for the menu item right at the top. For the horizontal position we also need to multiply the result of cosines with the menu radius but 70 times 0 is still 0.
+			</p>
+			<p>
+				Again we now just have the center coordinate for the menu item, not the left position of the HTML element. Just like with the vertical position we need to correct the value we have with half the size of the menu item, 25px. For the menu item at the top this gives us a left value of -25px.
+			</p>
+		</section>
+	</section>
+
+	<section>
+		<h3>Space needed for the menu</h3>
+		<p>
+			When you know the size of the menu items and the radius of the menu when it's opened, it is easy to calculate how much space the menu will take up when it is opened. In our case the menu radius is 70px so the diameter, which is twice the radius, is 140px. Now we need to take into account that the menu items stick out half of their size. This happens at both opposite ends of the circle. We will have to add the height of a menu item to the menu diameter. For our example menu that will be 140px + 50px = 190px.
+		</p>
+	</section>
+</section>
+
+<section>
+	<h2>The data-position attribute explained</h2>
+	<p>
+		Remember when I said the <code>data-position</code> attribute is important? Let me tell you what you can use it for. It will allow you to change the way the menu opens without having to change anything in the mixin. The value 0 will always correspond with the item at the straight at the top and then it is number sequentially clockwise. With the exact same styles as we've created earlier in the section 'Opening up the menu' we can make these menus.
+	</p>
+	<figure>
+		<div class="break-out">
+			<div class="example-container">
+				<div class="radial-menu-normal example5">
+					<button type="button" class="radial-menu-item" data-index="0" data-position="6">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="5">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="4">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="3">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="2">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="1">6</button>
+					<button type="button" class="radial-menu-item" data-index="6" data-position="0">7</button>
+					<button type="button" class="radial-menu-item" data-index="7" data-position="7">8</button>
+				</div>
+				<div class="radial-menu-normal example5">
+					<button type="button" class="radial-menu-item" data-index="0">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="0">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="1">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="2">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="3">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="4">6</button>
+				</div>
+				<div class="radial-menu-normal example5">
+					<button type="button" class="radial-menu-item" data-index="0" data-position="5">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="7">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="0">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="1">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="2">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="3">6</button>
+				</div>
+			</div>
+		</div>
+		<figcaption class="example">Look ma, no extra styles!</figcaption>
+	</figure>
+</section>
+
+<section>
+	<h2>Adding some transition into the mix(in)</h2>
+	<p>
+		What we have now is quite nice but it doesn't yet have the wow factor we're looking for. Let's add some transitions to really make it shine. In order to do this we'll be adding one last parameter to our mixin, the <code>item-delay</code> parameter. The effect I am going for is a fan out effect, each subsequent menu item should take a little longer before its transition starts. Say you want every menu item to wait .1 second longer before the previous one to start. The first item would have a delay of 0 and the eight item, which has index 7, a delay of .7 seconds. The perfect place to add this is in the mixin where we now set the z-index. Let's modify the mixin to look like this:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs css">
+<span class="hljs-comment">/*  First we added the fourth parameter to the mixin. It will take the delay specified
+    in seconds */</span>
+<span class="hljs-class">.radial-menu</span>(<span class="hljs-at_rule">@<span class="hljs-keyword">items,</span> @item-radius, @menu-radius, @item-delay) </span>{
+    <span class="hljs-at_rule">@<span class="hljs-keyword">step-in-radians:</span> ((<span class="hljs-number">360</span> / @items) * (<span class="hljs-function">pi()</span> / <span class="hljs-number">180</span>))</span>;
+
+    <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-function">unit((-@item-radius)</span>, px)</span></span>;
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule">}</span></span>
+    <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="0"]</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    &amp;<span class="hljs-class">.open</span> &gt; <span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+    <span class="hljs-rule">}</span></span>
+
+    <span class="hljs-class">.radial-menu-items</span> (<span class="hljs-at_rule">@<span class="hljs-keyword">index)</span> when (@index &gt; -<span class="hljs-number">1</span>) </span>{
+        <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-rule"><span class="hljs-attribute">-moz-transition-delay</span>:<span class="hljs-value"> <span class="hljs-function">unit(<span class="hljs-function">round((@item-delay * @index)</span>, <span class="hljs-number">2</span>)</span>, s)</span></span>;
+            <span class="hljs-rule"><span class="hljs-attribute">-o-transition-delay</span>:<span class="hljs-value"> <span class="hljs-function">unit(<span class="hljs-function">round((@item-delay * @index)</span>, <span class="hljs-number">2</span>)</span>, s)</span></span>;
+            <span class="hljs-rule"><span class="hljs-attribute">-webkit-transition-delay</span>:<span class="hljs-value"> <span class="hljs-function">unit(<span class="hljs-function">round((@item-delay * @index)</span>, <span class="hljs-number">2</span>)</span>, s)</span></span>;
+            <span class="hljs-comment">/*  Here we set the delay for the transition, we round it to two decimals or
+                else you get some crazy numbers. The three lines above do the same only
+                with the vendor prefixes that you may need. */</span>
+            <span class="hljs-rule"><span class="hljs-attribute">transition-delay</span>:<span class="hljs-value"> <span class="hljs-function">unit(<span class="hljs-function">round((@item-delay * @index)</span>, <span class="hljs-number">2</span>)</span>, s)</span></span>;
+            <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> (<span class="hljs-number">100</span> - @index)</span></span>;
+        <span class="hljs-rule">}</span></span>
+
+        <span class="hljs-class">.active</span> &gt; <span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-position="@{index}"]</span> <span class="hljs-rules">{
+            <span class="hljs-rule">@<span class="hljs-attribute">angle </span>:<span class="hljs-value"> ((@step-in-radians * @index) - (<span class="hljs-function">pi()</span>/<span class="hljs-number">2</span>))</span></span>;
+            <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-function">unit((<span class="hljs-function">round((<span class="hljs-function">cos(@angle)</span> * @menu-radius)</span>, <span class="hljs-number">0</span>)</span> - @item-radius), px)</span></span>;
+            <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-function">unit((<span class="hljs-function">round((<span class="hljs-function">sin(@angle)</span> * @menu-radius)</span>, <span class="hljs-number">0</span>)</span> - @item-radius), px)</span></span>;
+        <span class="hljs-rule">}</span></span>
+
+        <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">index</span> - <span class="hljs-number">1</span>))</span>;
+    }
+    <span class="hljs-class">.radial-menu-items</span>((<span class="hljs-at_rule">@<span class="hljs-keyword">items</span> - <span class="hljs-number">1</span>))</span>;
+}
+            </code></pre>
+		</div>
+		<figcaption class="listing">Adding support for delayed transitions</figcaption>
+	</figure>
+	<p>Now we can call our mixin like this:</p>
+	<pre class="highlight"><code class="hljs css"><span class="hljs-at_rule">@<span class="hljs-keyword">radial-menu(8,</span> <span class="hljs-number">25</span>, <span class="hljs-number">70</span>, <span class="hljs-number">0.05</span>)</span>;</code></pre>
+	<p>And it will output the following CSS for us. I left out the vendor prefixed attributes for brevity.</p>
+	<pre class="highlight"><code class="hljs css"><span class="hljs-class">.radial-menu-item</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value">-<span class="hljs-number">25</span>px</span></span>;<span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value">absolute</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value">-<span class="hljs-number">25</span>px</span></span></span>}
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="7"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transition-delay</span>:<span class="hljs-value">.<span class="hljs-number">35</span>s</span></span>;<span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"><span class="hljs-number">93</span></span></span></span>}
+<span class="hljs-class">.active</span>&gt;<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-position="7"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value">-<span class="hljs-number">74</span>px</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value">-<span class="hljs-number">74</span>px</span></span></span>}
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="6"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transition-delay</span>:<span class="hljs-value">.<span class="hljs-number">3</span>s</span></span>;<span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"><span class="hljs-number">94</span></span></span></span>}
+<span class="hljs-class">.active</span>&gt;<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-position="6"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value">-<span class="hljs-number">95</span>px</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value">-<span class="hljs-number">25</span>px</span></span></span>}
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="5"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transition-delay</span>:<span class="hljs-value">.<span class="hljs-number">25</span>s</span></span>;<span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"><span class="hljs-number">95</span></span></span></span>}
+<span class="hljs-class">.active</span>&gt;<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-position="5"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value">-<span class="hljs-number">74</span>px</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"><span class="hljs-number">24</span>px</span></span></span>}
+<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-index="4"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transition-delay</span>:<span class="hljs-value">.<span class="hljs-number">2</span>s</span></span>;<span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"><span class="hljs-number">96</span></span></span></span>}
+<span class="hljs-class">.active</span>&gt;<span class="hljs-class">.radial-menu-item</span><span class="hljs-attr_selector">[data-position="4"]</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value">-<span class="hljs-number">25</span>px</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"><span class="hljs-number">45</span>px</span></span></span>}
+...</code></pre>
+	<p>
+		As you may have noticed, the mixin only sets the <code>transition-delay</code> property and nothing else. This means it is up to you to specify in your own CSS what it is you want to be transitioned. For the example below I've added the following (again, the vendor prefixes are left out for brevity):
+	</p>
+	<pre class="highlight"><code class="hljs css"><span class="hljs-tag">transform</span>: <span class="hljs-tag">left</span> 1<span class="hljs-tag">s</span> <span class="hljs-tag">linear</span>, <span class="hljs-tag">top</span> 1<span class="hljs-tag">s</span> <span class="hljs-tag">linear</span>, <span class="hljs-tag">visibility</span> 1<span class="hljs-tag">s</span> <span class="hljs-tag">linear</span>;</code></pre>
+	<p>
+		I've set the transformation duration to 1 second for the demo below, I would advice you to use a much shorter duration, you don't want users to wait for a second each time they want to use the menu.
+	</p>
+	<figure>
+		<div class="break-out">
+			<div class="example-container">
+				<div class="radial-menu-normal example7">
+					<button type="button" class="radial-menu-item" data-index="0" data-position="6">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="5">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="4">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="3">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="2">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="1">6</button>
+					<button type="button" class="radial-menu-item" data-index="6" data-position="0">7</button>
+					<button type="button" class="radial-menu-item" data-index="7" data-position="7">8</button>
+				</div>
+				<div class="radial-menu-normal example7">
+					<button type="button" class="radial-menu-item" data-index="0">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="0">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="1">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="2">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="3">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="4">6</button>
+				</div>
+				<div class="radial-menu-normal example7">
+					<button type="button" class="radial-menu-item" data-index="0" data-position="5">1</button>
+					<button type="button" class="radial-menu-item" data-index="1" data-position="7">2</button>
+					<button type="button" class="radial-menu-item" data-index="2" data-position="0">3</button>
+					<button type="button" class="radial-menu-item" data-index="3" data-position="1">4</button>
+					<button type="button" class="radial-menu-item" data-index="4" data-position="2">5</button>
+					<button type="button" class="radial-menu-item" data-index="5" data-position="3">6</button>
+				</div>
+			</div>
+		</div>
+		<figcaption class="example">Now with extra shiny!</figcaption>
+	</figure>
+</section>
+
+<section>
+	<h2>Wrapping up</h2>
+	<p>
+		We've created a mixin for a radial menu which gives us total freedom over how the menu opens up without having to alter the mixin. You can even make the menu with less items than the maximum you've created styles for to get some nice effects.
+	</p>
+	<p>
+		If you have any questions please post them in the comments section below. To get started with your own radial menu you can use the links below to download the finished mixin.
+	</p>
+	<ul class="download-list" id="download-links">
+		<li><a data-ga="{'action':'download', 'category':'radial-menu','label':'SCSS version', 'value':'0'}" href="/static/articles/radial-menu/radial-menu-scss.zip" data-size="(.zip, 2KB)">SCSS version of the mixin</a></li>
+		<li><a data-ga="{'action':'download', 'category':'radial-menu','label':'LESS version', 'value':'1'}" href="/static/articles/radial-menu/radial-menu-less.zip" data-size="(.zip, 1KB)">LESS version of the mixin</a></li>
+	</ul>
+</section>
+	<aside id="comments-skip" tabindex="-1">
+			<h2 id="disqus_thread">Comments</h2>
+			<p id="comments-js">I use Disqus for the comments on my website. If you want to see the comments or post your own, please visit this page with JavaScript enabled.</p>
+		</aside>
+	</main>
+	<nav class="article-navigation">
+				<h2 class="visually-hidden">Navigate to other articles</h2>
+				<a href="/articles/track-file-downloads" class="newer" title="Go to the next, newer article">Track file downloads with Google&#x27;s Universal Analytics</a>
+				
+			</nav>
+	<footer class="site-footer">
+
+	<a href="#scroll-top-target"><span>Back to top</span></a>
+
+	<div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+		<meta itemprop="url" content="https://plus.google.com/105989274339589747997/about">
+		<ul class="social-links">
+			<li>
+				<a href="https://www.linkedin.com/pub/thijs-busser/33/11a/b4b" title="Thijs Busser on Linked In"><span>Linked In</span></a>
+			</li>
+			<li>
+				<a href="http://plus.google.com/105989274339589747997/about" rel="author" title="Thijs Busser on Google Plus"><span>Google Plus</span></a>
+			</li>
+			<li>
+				<a href="http://twitter.com/tbusser" title="Thijs Busser on Twitter"><span>Twitter</span></a>
+			</li>
+			<li>
+				<a href="/feed.xml" title="RSS Feed"><span>RSS</span></a>
+			</li>
+		</ul>
+
+		<p>©2014 by <a href="/about-me"><span itemprop="name">Thijs Busser</span></a>. All original content on this website is published under <a href="http://creativecommons.org/licenses/by/4.0/">license</a>.</p>
+	</div>
+</footer>
+	<script src="/static/js/site/built.js"></script><script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-49038202-1', 'tbusser.net');
+			ga('send', 'pageview');
+		</script>
+<script src="http://tbusser.net/static/js/post/radial-menu.js" async defer></script>
+<script>
+	require.config({
+		baseUrl: '/static/js/site'
+	});
+
+	(function() {
+		'use strict';
+
+		var tests = [
+				{test: '[data-is-responsive], [data-lazy-load]', module: 'images'},
+				{test: '[href="#scroll-top-target"]', module: 'scroll-to-top'}
+			],
+			modules = [];
+
+		for (var index=0,ubound=tests.length; index<ubound; index++) {
+			if (document.querySelectorAll(tests[index].test).length > 0) {
+				modules.push(tests[index].module);
+			}
+		}
+
+		if (modules.length > 0) {
+			require(modules, function(modules) {
+				// Loop through the arguments object, it will hold the modules we wanted to load
+				for (var index=0,ubound=arguments.length; index<ubound; index++) {
+					// Create an instance of the module, to do this we need to make sure it is a function
+					if (typeof arguments[index] === 'function') {
+						var module = new arguments[index];
+					}
+				}
+			});
+		}
+	})();
+</script>
+
+</body>
+</html>

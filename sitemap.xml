@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url> <loc>http://tbusser.net/about-me/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/radial-menu</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/track-file-downloads</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/disqus-on-demand</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/OverUnder/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/istanbulreport/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/istanbulreport/lib/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/istanbulreport/lib/Example.js/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/js-unit-testing-part-02</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/js-unit-testing-part-03</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/bookmarks/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/calendar</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/articles/js-unit-testing-part-01</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/javascript/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/grunt/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/mocha/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/unit-testing/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/istanbul/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/continuous-integration/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/less/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/css/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/tutorial/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/scss/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/google-analytics/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://tbusser.net/tags/disqus/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+</urlset>

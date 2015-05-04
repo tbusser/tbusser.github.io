@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+	<title>Game</title>
+
+	<link rel="stylesheet" href="static/css/site.css" media="screen" charset="utf-8">
+</head>
+
+<body>
+	<h1>Over or under</h1>
+<article class="playtable">
+	<!--
+	We need a seperate container to hide the overflow of the elevator. We can't do
+	this on the element above due to the animation of the game result text which
+	should be visible outside of the game table
+	-->
+	<div class="overflow-container">
+		<div id="js-elevator" class="elevator">
+			<!--
+			This is the element where the user can set the number of cards to be
+			guessed right, the credits to bet and the button to start the game.
+			-->
+			<article id="stakesTable" class="stakes-table elevator__level">
+				<h1 class="stakes-table__title">Place your bet</h1>
+				<div class="stakes-table__control-container">
+					<article class="spinner">
+						<h2 class="spinner__title">Right guesses out of 8 cards</h2>
+						<button type="button" class="spinner__button spinner__button--increase" data-for="inputRightGuesses"><span class="visually-hidden">Increase the number of guess you'll get right</span></button>
+						<input type="number" id="inputRightGuesses" value="5" min="5" max="8">
+						<button class="spinner__button spinner__button--decrease" data-for="inputRightGuesses"><span class="visually-hidden">Decrease the number of guesses you'll get right</span></button>
+					</article>
+					<article class="spinner">
+						<h2 class="spinner__title">Bet amount</h2>
+						<button type="button" class="spinner__button spinner__button--increase" data-for="inputBetAmount"><span class="visually-hidden">Increase the number of guess you'll get right</span></button>
+						<input type="number" id="inputBetAmount" value="5" min="1" max="10">
+						<button class="spinner__button spinner__button--decrease" data-for="inputBetAmount"><span class="visually-hidden">Decrease the number of guesses you'll get right</span></button>
+					</article>
+					<button type="button" id="reshuffle" class="control-button__start">Start game</button>
+				</div>
+			</article>
+			<!--
+			This element contains the card deck and the buttons to guess if the
+			next card will be over or under.
+			-->
+			<article id="gametable" class="game-table elevator__level">
+				<article class="deck">
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+					<article class="card">
+						<div class="card-face__back"></div>
+						<div class="card-face__front"></div>
+					</article>
+				</article>
+
+				<article id="playTable" class="control-center">
+					<button type="button" class="direction-button direction-button--up" id="btnGuessOver">Over</button>
+					<span>The next card will be</span>
+					<button type="button" class="direction-button direction-button--down" id="btnGuessUnder">Under</button>
+				</article>
+			</article>
+			<!--
+			This element will be used to show the achievement which the player can
+			earn.
+			-->
+			<article class="achievements-container elevator__level">
+				<h1>You have collected <span id="achievementsUnlockedPoints"></span> out of <span id="achievementsTotalPoints"></span> points</h1>
+
+				<ol id="achievementsList" class="achievement-list">
+				</ol>
+			</article>
+
+			<article id="settings" class="elevator__level">
+				<div class="settings-table__container">
+					<p>
+						Your statistics and unlocked achievements are stored between sessions. If you want you can remove this data, it will reset all unlocked achievements.
+					</p>
+					<button type="button" id="btnReset" class="control-button">Reset data</button>
+				</div>
+			</article>
+		</div>
+	</div>
+	<!--
+	This element will contain the text informing the player if the game was won or lost
+	-->
+	<div class="game-result game-result--hidden"></div>
+</article>
+
+<article id="betting-center" class="betting-center">
+	<button id="btnSettings" class="control-button__settings"><span class="visually-hidden">Show settings</span></button>	
+	<div class="value-container">
+		<span class="value-container__title">Current balance:</span>
+		<span id="valueBalance" class="value-container__value">---</span>
+	</div>
+	<div class="value-container">
+		<span class="value-container__title">Cards guessed</span>
+		<div>
+			<span id="valueIndex" class="value-container__value">0</span>
+			<span class="value-container__subtext">/ 8</span>
+		</div>
+	</div>
+	<div class="value-container">
+		<span class="value-container__title">Right guesses</span>
+		<div>
+			<span id="valueRightGuess" class="value-container__value">0</span>
+			<span id="valueTargetGuesses" class="value-container__subtext">/ 0</span>
+		</div>
+	</div>
+	<button id="achievements" class="control-button__achievements"><span class="visually-hidden">Show achievements</span></button>
+</article>
+
+<!-- Notification component -->
+<article id="notification" class="notification">
+	<h2 class="notification__title"></h2>
+	<p class="notification__description"></p>
+</article>
+	<script charset="utf-8" data-main="static/js/game.js" src="static/js/vendor/require.js"></script>
+
+</body>
+</html>

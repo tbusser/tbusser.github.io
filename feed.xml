@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>Something Awesome | Thijs Busser's Blog</title>
+	<link href="http://tbusser.net/feed.xml" rel="self"/>
+	<link href="http://tbusser.net/"/>
+	<updated>2015-05-04T09:17:42.376Z</updated>
+	<id>http://tbusser.net/</id>
+	<author>
+		<name>Thijs Busser</name>
+	</author>
+	<entry>
+					<title>A VanillaJS Date / Time picker</title>
+					<link href="http://tbusser.net/articles/calendar"/>
+					<published>2015-03-13T08:00:00.000Z</published>
+					<updated>2015-03-13T08:00:00.000Z</updated>
+					<id>tag:tbusser.net,2015-03-13,/articles/calendar</id>
+					<content type="html">
+						<![CDATA[In this article I will show the VanillaJS Date / Time picker I've developed. It is meant as an easy, user friendly component for entering a date and / or time.]]>
+					</content>
+				</entry><entry>
+					<title>Running unit tests on a continuous integration service like Travis CI or Wercker</title>
+					<link href="http://tbusser.net/articles/js-unit-testing-part-03"/>
+					<published>2014-09-12T08:00:00.000Z</published>
+					<updated>2014-09-12T08:00:00.000Z</updated>
+					<id>tag:tbusser.net,2014-09-12,/articles/js-unit-testing-part-03</id>
+					<content type="html">
+						<![CDATA[This is the last article in a series of three in which I explain how I setup my JavaScript unit testing with code coverage and getting it to run on a CI Server. <a href="http://tbusser.net/articles/js-unit-testing-part-01">First I described how to add unit testing</a> and then I showed how to <a href="http://tbusser.net/articles/js-unit-testing-part-02">configure Istanbul and Grunt to generate code coverage reports</a>. In this third step I will explain how I configured the project to use a continuous integration (CI) server like <a href="https://travis-ci.org">Travis CI</a> or <a href="http://wercker.com/">Wercker</a> to run the unit tests when changes are pushed to the Git server.]]>
+					</content>
+				</entry><entry>
+					<title>Generating code coverage reports using Istanbul</title>
+					<link href="http://tbusser.net/articles/js-unit-testing-part-02"/>
+					<published>2014-09-11T09:10:00.000Z</published>
+					<updated>2014-09-11T09:10:00.000Z</updated>
+					<id>tag:tbusser.net,2014-09-11,/articles/js-unit-testing-part-02</id>
+					<content type="html">
+						<![CDATA[This is the second article in a series of three in which I will explain how I have setup unit testing for a JavaScript module. It documents how I have added code coverage reports using Istanbul. In the next article I will explain how to integrate with a continuous integration (CI) server.]]>
+					</content>
+				</entry><entry>
+					<title>JavaScript unit testing with Mocha and Grunt</title>
+					<link href="http://tbusser.net/articles/js-unit-testing-part-01"/>
+					<published>2014-09-10T09:10:00.000Z</published>
+					<updated>2014-09-10T09:10:00.000Z</updated>
+					<id>tag:tbusser.net,2014-09-10,/articles/js-unit-testing-part-01</id>
+					<content type="html">
+						<![CDATA[This is the first article in a series of three in which I will explain how I have setup unit testing for a JavaScript module. It documents the initial project setup and explains in a step-by-step fashion what I have done to get it up in running. In future articles I will explain how to add code coverage reports and integration with a continuous integration (CI) server.]]>
+					</content>
+				</entry><entry>
+					<title>Load Disqus comments on demand</title>
+					<link href="http://tbusser.net/articles/disqus-on-demand"/>
+					<published>2014-05-23T09:10:00.000Z</published>
+					<updated>2014-05-23T09:10:00.000Z</updated>
+					<id>tag:tbusser.net,2014-05-23,/articles/disqus-on-demand</id>
+					<content type="html">
+						<![CDATA[When it came to adding comments to my blog I quickly decided on using Disqus to get the job done. It was easy to implement and I had seen it in use on many different website already. While I was quite happy with the result I wasn't too happy with the increase in page weight. On every visit to a page with comments enabled the Disqus code will pull in a lot of data. Because I am trying to build something light weight and friendly to people who have a slow connection or a fixed data allotment this didn't sit well with me. Let's see how we can make it into something that has a better user experience	.]]>
+					</content>
+				</entry><entry>
+					<title>Track file downloads with Google&#x27;s Universal Analytics</title>
+					<link href="http://tbusser.net/articles/track-file-downloads"/>
+					<published>2014-04-05T20:15:00.000Z</published>
+					<updated>2014-04-05T20:15:00.000Z</updated>
+					<id>tag:tbusser.net,2014-04-05,/articles/track-file-downloads</id>
+					<content type="html">
+						<![CDATA[I wanted to track which version of the <a href="http://tbusser.net/articles/radial-menu">Radial Menu mixin</a> was more popular. Since I already use Google Analytics for the page views it was logical to use it to track the file downloads. It took a couple of tries and wading through some poor examples on various websites before I had something that worked for me. In this article I will explain how I am counting file downloads using Google Analytics events.]]>
+					</content>
+				</entry><entry>
+					<title>Radial Menu mixin</title>
+					<link href="http://tbusser.net/articles/radial-menu"/>
+					<published>2014-02-20T23:00:00.000Z</published>
+					<updated>2014-02-20T23:00:00.000Z</updated>
+					<id>tag:tbusser.net,2014-02-21,/articles/radial-menu</id>
+					<content type="html">
+						<![CDATA[In this article we will be creating a mixin to create the styles for a radial menu. The idea for the radial menu is not my own, I came across a demonstration of <a href="http://permalightnyc.com/experiments/radial-menu" target="_blank">a radial menu by Permalight NYC</a> and got inspired. The mixin will be used to create the styles for our menu elements and I will show how you can easily change the way the menu fans out just by playing with some custom data attributes. The examples are in LESS but at the end you can download the finished mixin in either LESS or SCSS format.]]>
+					</content>
+				</entry>
+</feed>

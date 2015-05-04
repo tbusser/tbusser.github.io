@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="Adding Istanbul for code coverage to a project with Mocha as a unit test framework">
+	
+	<!-- Open Graph metatags-->
+	<meta property="article:author" content="https://www.facebook.com/thijsbusser">
+	<meta property="article:section" content="development">
+		
+	<meta property="article:tag" content="JavaScript">
+			<meta property="article:tag" content="Grunt">
+			<meta property="article:tag" content="Istanbul">
+			<meta property="article:tag" content="Unit testing">
+			
+	<meta property="og:description" content="Adding Istanbul for code coverage to a project with Mocha as a unit test framework">
+	
+	<meta property="og:site_name" content="Something Awesome | Thijs Busser's Blog">
+	<meta property="og:title" content="Generating code coverage reports using Istanbul | Something Awesome">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="http://tbusser.net/articles/js-unit-testing-part-02/index.html">
+
+	<!-- Twitter card -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:creator" content="@tbusser">
+	<title>Generating code coverage reports using Istanbul | Something Awesome</title>
+	<!-- The HTML5Shiv inlined as recommended by Paul Irish in this post: https://github.com/Modernizr/Modernizr/issues/878#issuecomment-41448059 -->
+	<script>
+		!function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=t.elements;return"string"==typeof a?a.split(" "):a}function n(a,b){var c=t.elements;"string"!=typeof c&&(c=c.join(" ")),"string"!=typeof a&&(a=a.join(" ")),t.elements=c+" "+a,s(b)}function o(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function p(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=o(c));var g;return g=d.cache[a]?d.cache[a].cloneNode():f.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!g.canHaveChildren||e.test(a)||g.tagUrn?g:d.frag.appendChild(g)}function q(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||o(a);for(var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;g>e;e++)d.createElement(f[e]);return d}function r(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return t.shivMethods?p(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-:]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(t,b.frag)}function s(a){a||(a=b);var c=o(a);return!t.shivCSS||g||c.hasCSS||(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||r(a,c),a}var g,k,c="3.7.2",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,h="_html5shiv",i=0,j={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){g=!0,k=!0}}();var t={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:s,createElement:p,createDocumentFragment:q,addElements:n};a.html5=t,s(b)}(this,document);
+	</script>
+
+	<link rel="stylesheet" href="http://tbusser.net/static/css/site.css">
+	
+	
+	<!--[if lte IE 9]>
+	<script src="http://tbusser.net/static/js/shims/classList.js"></script>
+	<![endif]-->
+</head>
+
+<body id="scroll-top-target" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+		<ul class="skip-links">
+		<li><a href="#navigation-skip">Skip to navigation</a></li>
+		<li><a href="#content-skip">Skip to content</a></li>
+		<li><a href="#comments-skip">Skip to comments</a></li>
+	</ul>
+	<!--[if lte IE 9]>
+	<div class="high-attention-warning">
+		The browser you are using might not give you the best experience on this website. <a href="http://browsehappy.com/">Please upgrade</a> to a more recent web browser for a better experience.
+	</div>
+<![endif]-->
+		<header class="site-header" role="banner">
+		<a href="/">
+		<figure>
+			<img src="" alt="Headshot of Thijs Busser" class="headshot" data-is-responsive data-has-retina data-src="/static/img/headshot{modifier}-{breakpoint}.jpg">
+			<noscript>
+				<img src="/static/img/headshot2x-xl.jpg" alt="Headshot of Thijs Busser" class="headshot">
+			</noscript>
+		</figure>
+		<div class="alpha">
+				Something Awesome
+			</div>
+		</a>
+		<div>by Thijs Busser, front-end developer</div>
+	</header>
+	<main role="main" id="content-skip" tabindex="-1">
+		<h1 itemprop="name">Generating code coverage reports using Istanbul</h1>
+		<aside class="profile meta-data">
+			<h2>Article meta data</h2><dl>
+	<dt>Published on:</dt>
+	
+	<dd><time itemprop="datePublished" datetime="2014-09-11T11:10+01:00">Sep 11th, 2014</time></dd>
+
+	<dt>Comments:</dt><dd><a href="http://tbusser.net/articles/js-unit-testing-part-02/#disqus_thread"></a></dd>
+
+<dt>Tags:</dt><dd>
+			<a href="/tags/javascript/" rel="tag" title="See all articles tagged with JavaScript">JavaScript</a>
+		</dd><dd>
+			<a href="/tags/grunt/" rel="tag" title="See all articles tagged with Grunt">Grunt</a>
+		</dd><dd>
+			<a href="/tags/istanbul/" rel="tag" title="See all articles tagged with Istanbul">Istanbul</a>
+		</dd><dd>
+			<a href="/tags/unit-testing/" rel="tag" title="See all articles tagged with Unit testing">Unit testing</a>
+		</dd>
+</dl><meta itemprop="keywords" content="JavaScript Grunt Istanbul Unit testing">
+
+		</aside>
+	<section class="introduction">
+	<h2 id="section1">Introduction</h2>
+	<p itemprop="description">
+		This is the second article in a series of three in which I will explain how I have setup unit testing for a JavaScript module. It documents how I have added code coverage reports using Istanbul. In the next article I will explain how to integrate with a continuous integration (CI) server.
+	</p>
+	<section>
+		<h3 id="section1a">Series overview</h3>
+		<p>
+			This series consists of the following articles:
+		</p>
+		<ol>
+			<li><a href="/articles/js-unit-testing-part-01" rel="prev">Part 1: JavaScript unit testing with Mocha and Grunt</a></li>
+			<li>Part 2: Generating code coverage reports using Istanbul</li>
+			<li><a href="/articles/js-unit-testing-part-03" rel="next">Part 3: Running unit tests on a continuous integration service like Travis CI or Wercker</a></li>
+		</ol>
+	</section>
+
+	<section>
+		<h3 id="section1b">The demo project on GitHub</h3>
+		<p>
+			The <a href="https://github.com/tbusser/js-unit-test-demo">files of the demo project</a> are available on GitHub. For every step in getting the project setup there is separate branch in the repository. Whenever there is a branch with the current state of the code in the article I will make a mention of it in the text.
+		</p>
+	</section>
+</section>
+
+<section>
+	<h2 id="section2">Setting up Istanbul</h2>
+	<p>
+		For the code coverage reports I am using <a href="http://gotwarlost.github.io/istanbul/">Istanbul</a>. It is the code coverage tool of choice for <a href="http://theintern.io">The Intern</a> and <a href="http://karma-runner.github.io/0.8/config/coverage.html">Karma</a> so it seemed like a safe pick. To add Istanbul to the project the following command needs to be executed:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install --save-dev istanbul</code></pre>
+</section>
+
+<section>
+	<h2 id="section3">Adding Grunt tasks</h2>
+	<p>
+		With the package installed it is time to create the Grunt task to run Istanbul. In the <code>Gruntfile.js</code> the following needs to be added:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+<span class="hljs-comment">// Require Istanbul, this way we can use it in our Grunt task</span>
+<span class="hljs-keyword">var</span> istanbul = <span class="hljs-built_in">require</span>(<span class="hljs-string">'istanbul'</span>);
+
+<span class="hljs-comment">// This is the reason we needed a modified version of grunt-mocha. The</span>
+<span class="hljs-comment">// modification calls this method and passes on the information we need for</span>
+<span class="hljs-comment">// Istanbul to do its work</span>
+grunt.event.on(<span class="hljs-string">'coverage'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(coverage)</span> {</span>
+    <span class="hljs-comment">// Write the data we received to the coverage property of the coverage task</span>
+    grunt.config(<span class="hljs-string">'coverage.coverage'</span>, coverage);
+});
+
+<span class="hljs-comment">// Here we define the coverage task, it will have two targets: instrument and report</span>
+grunt.registerMultiTask(<span class="hljs-string">'coverage'</span>, <span class="hljs-string">'Generates coverage reports for JS using Istanbul'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">switch</span>(<span class="hljs-keyword">this</span>.target) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'instrument'</span>:
+        <span class="hljs-comment">// In the target configuration it is possible to exclude certain files like</span>
+        <span class="hljs-comment">// third party libraries</span>
+        <span class="hljs-keyword">var</span> ignore = <span class="hljs-keyword">this</span>.data.ignore || [];
+        <span class="hljs-comment">// Create a new instrumenter</span>
+        <span class="hljs-keyword">var</span> instrumenter = <span class="hljs-keyword">new</span> istanbul.Instrumenter();
+        <span class="hljs-comment">// In the target configuration you need to specify the files to cover, here</span>
+        <span class="hljs-comment">// we will loop over all the files</span>
+        <span class="hljs-keyword">this</span>.files.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file)</span> {</span>
+            <span class="hljs-comment">// 1: Get the filename for the current file</span>
+            <span class="hljs-comment">// 2: Read the file from disk, even if it might be a file we instructed</span>
+            <span class="hljs-comment">//    Istanbul to ignore. It will still get written to the output folder</span>
+            <span class="hljs-keyword">var</span> filename = file.src[<span class="hljs-number">0</span>],                     <span class="hljs-comment">/* [1] */</span>
+                instrumented = grunt.file.read(filename);   <span class="hljs-comment">/* [2] */</span>
+            <span class="hljs-comment">// Only instrument this file if it is not in ignored list</span>
+            <span class="hljs-keyword">if</span> (!grunt.file.isMatch(ignore, filename)) {
+                <span class="hljs-comment">// Instruct the instrumenter to work its magic on the file</span>
+                instrumented = instrumenter.instrumentSync(instrumented, filename);
+            }
+            <span class="hljs-comment">// Write the file to its destination</span>
+            grunt.file.write(file.dest, instrumented);
+        });
+        <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'report'</span>:
+        <span class="hljs-comment">// We need config property coverage.coverage to be present, if it is not</span>
+        <span class="hljs-comment">// present this will fail the task</span>
+        <span class="hljs-keyword">this</span>.requiresConfig(<span class="hljs-string">'coverage.coverage'</span>);
+
+        <span class="hljs-comment">// 1: In the target configuration you can set the reporters to use when</span>
+        <span class="hljs-comment">//    generating the report.</span>
+        <span class="hljs-comment">// 2: In the target configuration you can set the folder in which the</span>
+        <span class="hljs-comment">//    report(s) will be stored.</span>
+        <span class="hljs-keyword">var</span> Report = istanbul.Report,
+            Collector = istanbul.Collector,
+            reporters = <span class="hljs-keyword">this</span>.data.reports,    <span class="hljs-comment">/* [1] */</span>
+            dest = <span class="hljs-keyword">this</span>.data.dest,            <span class="hljs-comment">/* [2] */</span>
+            collector = <span class="hljs-keyword">new</span> Collector();
+
+        <span class="hljs-comment">// Fetch the coverage object we saved earlier</span>
+        collector.add(grunt.config(<span class="hljs-string">'coverage.coverage'</span>));
+
+        <span class="hljs-comment">// Iterate over all reporters</span>
+        reporters.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reporter)</span> {</span>
+            <span class="hljs-comment">// Create a report at the specified location for the current reports</span>
+            Report.create(reporter, {
+                dir: dest + <span class="hljs-string">'/'</span> + reporter
+            }).writeReport(collector, <span class="hljs-literal">true</span>);
+        });
+        <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">default</span>:
+        <span class="hljs-comment">// The target is neither instrument nor report, display a friendly warning message</span>
+        grunt.warn(<span class="hljs-string">'The target "'</span> + <span class="hljs-keyword">this</span>.target + <span class="hljs-string">'" is an invalid target. Valid targets are "instrument" and "report"'</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+});
+            </code></pre>
+		</div>
+		<figcaption class="listing">Registering the Grunt tasks for Istanbul</figcaption>
+	</figure>
+	<p>
+		Registering the tasks is only half the work. Next we need to add the configuration for these tasks, this we will do in <code>grunt/coverage.js</code> (again, the file needs to have the same name as the task we registered) and it looks like this:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+module.exports = {
+    <span class="hljs-comment">// This is the property we use for the report task to get its data from. The</span>
+    <span class="hljs-comment">// coverage data which will be stored in this property comes from the modified</span>
+    <span class="hljs-comment">// grunt-mocha task</span>
+    coverage: <span class="hljs-literal">null</span>,
+
+    <span class="hljs-comment">// Configure the instrument task. It will tell Istanbul which files to prepare</span>
+    <span class="hljs-comment">// 1: The files which Istanbul should not cover, e.g.: third party libraries.</span>
+    <span class="hljs-comment">//    These files will be copied as-is to the destination folder.</span>
+    <span class="hljs-comment">// 2: The file mask for the files to cover.</span>
+    <span class="hljs-comment">// 3: The folder where to look for the files.</span>
+    <span class="hljs-comment">// 4: The folder where the instrumented files and ignored files should be</span>
+    <span class="hljs-comment">//    copied to. Don't make this the same as the folder at [3] or your</span>
+    <span class="hljs-comment">//    original files will be overwritten</span>
+    instrument: {
+        ignore: [],                   <span class="hljs-comment">/* [1] */</span>
+        files: [
+            {
+                src: <span class="hljs-string">'**/*.js'</span>,       <span class="hljs-comment">/* [2] */</span>
+                expand: <span class="hljs-literal">true</span>,
+                cwd: <span class="hljs-string">'lib'</span>,           <span class="hljs-comment">/* [3] */</span>
+                dest: <span class="hljs-string">'test/src'</span>      <span class="hljs-comment">/* [4] */</span>
+            }
+        ]
+    },
+
+    <span class="hljs-comment">// Configure the report task</span>
+    <span class="hljs-comment">// 5: Specify the formats to use for the report. 'html' will result in a HTML</span>
+    <span class="hljs-comment">//    file which links to the reports for the instrumented files. This will</span>
+    <span class="hljs-comment">//    allow you to see which branches weren't executed etc. The 'text-summary'</span>
+    <span class="hljs-comment">//    reporter will write a small stats table to the terminal giving some</span>
+    <span class="hljs-comment">//    immediate visual feedback after running the Grunt task.</span>
+    <span class="hljs-comment">// 6: This is the folder where the reports will be written to. Each report</span>
+    <span class="hljs-comment">//    format, in our case just HTML, will be written to a subfolder named</span>
+    <span class="hljs-comment">//    after the format.</span>
+    report: {
+        reports: [<span class="hljs-string">'html'</span>, <span class="hljs-string">'text-summary'</span>],    <span class="hljs-comment">/* [5] */</span>
+        dest: <span class="hljs-string">'coverage'</span>                      <span class="hljs-comment">/* [6] */</span>
+    }
+};
+            </code></pre>
+		</div>
+		<figcaption class="listing">Configuration of the coverage task</figcaption>
+	</figure>
+</section>
+
+<section>
+	<h2 id="section4">Adding a new test task target</h2>
+	<p>
+		There is one last thing to do before we can start generating code coverage reports. Generarting the code coverage reports has to become part of the unit test flow. To do this it is necessary to change the test task that was registered in <a href="/articles/js-unit-testing-part-01">part 1</a>. The expanded task will look like this, it replaces the original registration:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+<span class="hljs-comment">// Here we define the test task, it has two targets: testonly and testcover</span>
+grunt.registerMultiTask(<span class="hljs-string">'test'</span>, <span class="hljs-string">'Run JS Unit tests'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">// Get the options for the current target</span>
+    <span class="hljs-keyword">var</span> options = <span class="hljs-keyword">this</span>.options();
+    <span class="hljs-comment">// In the options for the task you can configure which spec files should be</span>
+    <span class="hljs-comment">// run. We use this to create a list of file names which we can insert into</span>
+    <span class="hljs-comment">// the {{ tests }} placeholder in our HTML template</span>
+    <span class="hljs-keyword">var</span> tests = grunt.file.expand(options.files).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(file)</span> {</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'../'</span> + file;
+    });
+
+    <span class="hljs-comment">// build the template by replacing the placeholders for their actual values</span>
+    <span class="hljs-keyword">var</span> template = grunt.file.read(options.template).replace(<span class="hljs-string">'{{ tests }}'</span>, <span class="hljs-built_in">JSON</span>.stringify(tests)).replace(<span class="hljs-string">'{{ baseUrl }}'</span>, <span class="hljs-built_in">JSON</span>.stringify(options.baseUrl));
+
+    <span class="hljs-comment">// write template to tests directory</span>
+    grunt.file.write(options.runner, template);
+
+    <span class="hljs-comment">// Check the current target for the task</span>
+    <span class="hljs-keyword">switch</span>(<span class="hljs-keyword">this</span>.target) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'testcover'</span>:
+        <span class="hljs-comment">// Tell grunt to run the following three tasks:</span>
+        <span class="hljs-comment">// 1. coverage:intrument to created the instrumented files to use in the</span>
+        <span class="hljs-comment">//    unit tests.</span>
+        <span class="hljs-comment">// 2. mocha:testcover to perform the unit test. Because the instrumented</span>
+        <span class="hljs-comment">//    versions of our files are in a different folder we need a separate</span>
+        <span class="hljs-comment">//    target to instruct Mocha where to look for them.</span>
+        <span class="hljs-comment">// 3. coverage:report to generate the actual code coverage report(s).</span>
+        grunt.task.run(<span class="hljs-string">'coverage:instrument'</span>, <span class="hljs-string">'mocha:test'</span>, <span class="hljs-string">'coverage:report'</span>);
+        <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'testonly'</span>:
+        <span class="hljs-comment">// Run Mocha the way we did in part one</span>
+        grunt.task.run(<span class="hljs-string">'mocha:test'</span>);
+        <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">default</span>:
+        <span class="hljs-comment">// The target is neither testcover nor testonly, display a friendly warning message</span>
+        grunt.warn(<span class="hljs-string">'The target "'</span> + <span class="hljs-keyword">this</span>.target + <span class="hljs-string">'" is an invalid target. Valid targets are "testcover" and "testonly"'</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+});
+            </code></pre>
+		</div>
+		<figcaption class="listing">The expanded Grunt test task</figcaption>
+	</figure>
+	<p>
+		Now that the task has a new target it is needed to add a configuration for it. The <code>grunt/test.js</code> needs to be updated to this:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+module.exports = {
+    <span class="hljs-comment">// Configure the test task with the following options:</span>
+    <span class="hljs-comment">// 1: The name of the HTML template file, this is the file with the</span>
+    <span class="hljs-comment">//    placeholders.</span>
+    <span class="hljs-comment">// 2: This is the filename that is used to write the modified template to, it</span>
+    <span class="hljs-comment">//    is the file that we will run with Mocha.</span>
+    <span class="hljs-comment">// 3: The pattern for the spec files to include in the test runner, you can</span>
+    <span class="hljs-comment">//    use a glob pattern for this.</span>
+    options: {
+        template: <span class="hljs-string">'test/index.template.html'</span>, <span class="hljs-comment">/* [1] */</span>
+        runner: <span class="hljs-string">'test/index.html'</span>,            <span class="hljs-comment">/* [2] */</span>
+        files: <span class="hljs-string">'test/spec/**/*.js'</span>            <span class="hljs-comment">/* [3] */</span>
+    },
+
+    <span class="hljs-comment">// Configure the testonly target</span>
+    <span class="hljs-comment">// 4: This is the path where the JavaScript files to test are located, it is</span>
+    <span class="hljs-comment">//    relative to the /test folder.</span>
+    testonly: {
+        options: {
+            baseUrl: <span class="hljs-string">'../lib'</span>                   <span class="hljs-comment">/* [4] */</span>
+        }
+    },
+
+    <span class="hljs-comment">// Configure the testcover target</span>
+    <span class="hljs-comment">// 5: This is the path where the instrumented versions of the JavaScript files</span>
+    <span class="hljs-comment">//    are placed. It is relative to the /test folder</span>
+    testcover: {
+        options: {
+            baseUrl: <span class="hljs-string">'src'</span>                      <span class="hljs-comment">/* [5] */</span>
+        }
+    }
+};
+            </code></pre>
+		</div>
+		<figcaption class="listing">The expanded test task configuration</figcaption>
+	</figure>
+	<aside>
+		<h3>Download the code</h3>
+		<p>
+			You can get the project with code coverage configured from <a href="https://github.com/tbusser/js-unit-test-demo/tree/003-code-coverage-added">this</a> branch.
+		</p>
+	</aside>
+	<p>
+		When running the <code>test:testcover</code> task we need to change the path of the baseUrl which is placed in the require config in the <code>index.html</code> file. This path needs to be same as the path used in the <code>coverage:instrument</code> task. Be aware that in <code>grunt/coverage.js</code> the path is relative to the project root and in <code>grunt/test.js</code> the path is relative to the <code>/test</code> folder.
+	</p>
+</section>
+
+<section>
+	<h2 id="section5">Generating the code coverage reports</h2>
+	<p>
+		Now that everything is registered and configured it is possible to generate a code coverage report. All that is required to generate the reports is to run this command from the terminal in the root folder:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">grunt test:testcover</code></pre>
+	<p>
+		This will generate the following summary in the terminal:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+=============================== Coverage summary ===============================
+Statements   : <span class="hljs-number">100</span>% ( <span class="hljs-number">5</span>/<span class="hljs-number">5</span> )
+Branches     : <span class="hljs-number">100</span>% ( <span class="hljs-number">0</span>/<span class="hljs-number">0</span> )
+Functions    : <span class="hljs-number">100</span>% ( <span class="hljs-number">3</span>/<span class="hljs-number">3</span> )
+Lines        : <span class="hljs-number">100</span>% ( <span class="hljs-number">5</span>/<span class="hljs-number">5</span> )
+================================================================================
+            </code></pre>
+		</div>
+		<figcaption class="listing">The summary report generated by Istanbul</figcaption>
+	</figure>
+	<p>
+		Yeey! Every single line of the <code>Example.js</code> module was covered with the unit test. A job well done. For a more indept report we can turn to the <code>/cover/html</code> folder where Istanbul generated an <code>index.html</code> file.
+	</p>
+	<p>
+		The HTML report Istanbul generated for the demo project can also be found <a href="/istanbulreport/index.html">here</a>. From this page you can navigate to the individual JavaScript modules and see which lines of code were touched and which branches didn't get hit.
+	</p>
+</section>
+
+<section>
+	<h2 id="section6">Wrapping up</h2>
+	<p>
+		This concludes the second part of the series. The project will now generate code coverage reports whenever the unit tests are run. This will give a clear indication of how thoroughly we've tested the JavaScript modules and if everything still works according to plan. In the next part I will explain how to tie all this together with a continuous integration server. This will make sure the unit tests are run whenever changes to the repository get pushed to the Git server.
+	</p>
+</section>
+	<aside id="comments-skip" tabindex="-1">
+			<h2 id="disqus_thread">Comments</h2>
+			<p id="comments-js">I use Disqus for the comments on my website. If you want to see the comments or post your own, please visit this page with JavaScript enabled.</p>
+		</aside>
+	</main>
+	<nav class="article-navigation">
+				<h2 class="visually-hidden">Navigate to other articles</h2>
+				<a href="/articles/js-unit-testing-part-03" class="newer" title="Go to the next, newer article">Running unit tests on a continuous integration service like Travis CI or Wercker</a>
+				<a href="/articles/js-unit-testing-part-01" class="older" title="Go to the previous, older article">JavaScript unit testing with Mocha and Grunt</a>
+			</nav>
+	<footer class="site-footer">
+
+	<a href="#scroll-top-target"><span>Back to top</span></a>
+
+	<div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+		<meta itemprop="url" content="https://plus.google.com/105989274339589747997/about">
+		<ul class="social-links">
+			<li>
+				<a href="https://www.linkedin.com/pub/thijs-busser/33/11a/b4b" title="Thijs Busser on Linked In"><span>Linked In</span></a>
+			</li>
+			<li>
+				<a href="http://plus.google.com/105989274339589747997/about" rel="author" title="Thijs Busser on Google Plus"><span>Google Plus</span></a>
+			</li>
+			<li>
+				<a href="http://twitter.com/tbusser" title="Thijs Busser on Twitter"><span>Twitter</span></a>
+			</li>
+			<li>
+				<a href="/feed.xml" title="RSS Feed"><span>RSS</span></a>
+			</li>
+		</ul>
+
+		<p>©2014 by <a href="/about-me"><span itemprop="name">Thijs Busser</span></a>. All original content on this website is published under <a href="http://creativecommons.org/licenses/by/4.0/">license</a>.</p>
+	</div>
+</footer>
+	<script src="/static/js/site/built.js"></script><script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-49038202-1', 'tbusser.net');
+			ga('send', 'pageview');
+		</script>
+
+<script>
+	require.config({
+		baseUrl: '/static/js/site'
+	});
+
+	(function() {
+		'use strict';
+
+		var tests = [
+				{test: '[data-is-responsive], [data-lazy-load]', module: 'images'},
+				{test: '[href="#scroll-top-target"]', module: 'scroll-to-top'}
+			],
+			modules = [];
+
+		for (var index=0,ubound=tests.length; index<ubound; index++) {
+			if (document.querySelectorAll(tests[index].test).length > 0) {
+				modules.push(tests[index].module);
+			}
+		}
+
+		if (modules.length > 0) {
+			require(modules, function(modules) {
+				// Loop through the arguments object, it will hold the modules we wanted to load
+				for (var index=0,ubound=arguments.length; index<ubound; index++) {
+					// Create an instance of the module, to do this we need to make sure it is a function
+					if (typeof arguments[index] === 'function') {
+						var module = new arguments[index];
+					}
+				}
+			});
+		}
+	})();
+</script>
+
+</body>
+</html>

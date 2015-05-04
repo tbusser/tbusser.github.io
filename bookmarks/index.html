@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bookmarkmanagerApp">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/>
+
+	<meta name="description" content="">
+
+	<title>Bookmark manager</title>
+
+	<link rel="stylesheet" href="static/css/site.css">
+
+	<script src="static/js/app.js"></script>
+</head>
+
+<body>
+	<main ng-controller="TagsListControl">
+		<article id="tags-view" class="view">
+	<header class='view-header'>
+		<h2>Mappen</h2>
+	</header>
+	<ul class="tags">
+		<li ng-repeat="tag in tagIndex" ng-class="{selected: tag.selected}" data-value={{tag.count}} ng-click="showSitesForTag(tag)">
+			{{tag.name}}
+		</li>
+	</ul>
+</article>
+
+<article id="sites-view" class="view">
+	<header class='view-header'>
+		<h2>Sites</h2>
+	</header>
+	<ul class="sites">
+		<li ng-repeat="site in visibleSites" title="{{site.description}}" ng-class="{selected: site.selected}" ng-click="showSiteDetails(site)">
+			<span class="site-description">
+				{{site.description}}
+			</span>
+			<span class="subtle-text">
+				{{site.url}}
+			</span>
+		</li>
+	</ul>
+</article>
+
+<article id="site-detail-view" class="view">
+	<header class='view-header'>
+		<h2>Site details</h2>
+	</header>
+	<form ng-show="selectedSite">
+		<label for="inputSiteDescription">
+			<span class="subtle-text">Beschrijving</span>
+			<input id="inputSiteDescription" type="text" ng-model="editableSite.description" class="description">
+		</label>
+		<label for="inputSiteName">
+			<span class="subtle-text">Naam</span>
+			<input id="inputSiteName" type="text" ng-model="editableSite.name">
+		</label>
+		<label for="inputSiteUrl">
+			<span class="subtle-text">URL</span>
+			<input id="inputSiteUrl" type="url" ng-model="editableSite.url">
+		</label>
+		<label for="inputSiteTag">
+			<span class="subtle-text">Tag</span>
+			<input type="inputSiteTag" ng-model="editableSite.tag" list="inputSiteTagList">
+			<datalist id="inputSiteTagList">
+				<select>
+					<option ng-repeat="(key, value) in tagIndex" value="{{key}}">
+						{{value.name}}
+					</option>
+				</select>
+			</datalist>
+		</label>
+
+		<button ng-click="saveChanges()">
+			Opslaan
+		</button>
+	</form>
+	<div ng-show="!selectedSite" class="no-selected-site">
+		Selecteer een site om deze te bewerken.
+	</div>
+</article>
+	</main>
+</body>
+</html>

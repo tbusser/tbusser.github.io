@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="Configuring the unit tests to run on a continuous integration service like Travis CI or Wercker">
+	
+	<!-- Open Graph metatags-->
+	<meta property="article:author" content="https://www.facebook.com/thijsbusser">
+	<meta property="article:section" content="development">
+		
+	<meta property="article:tag" content="JavaScript">
+			<meta property="article:tag" content="Grunt">
+			<meta property="article:tag" content="Continuous integration">
+			<meta property="article:tag" content="Unit testing">
+			
+	<meta property="og:description" content="Configuring the unit tests to run on a continuous integration service like Travis CI or Wercker">
+	
+	<meta property="og:site_name" content="Something Awesome | Thijs Busser's Blog">
+	<meta property="og:title" content="Running unit tests on a continuous integration service like Travis CI or Wercker | Something Awesome">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="http://tbusser.net/articles/js-unit-testing-part-03/index.html">
+
+	<!-- Twitter card -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:creator" content="@tbusser">
+	<title>Running unit tests on a continuous integration service like Travis CI or Wercker | Something Awesome</title>
+	<!-- The HTML5Shiv inlined as recommended by Paul Irish in this post: https://github.com/Modernizr/Modernizr/issues/878#issuecomment-41448059 -->
+	<script>
+		!function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=t.elements;return"string"==typeof a?a.split(" "):a}function n(a,b){var c=t.elements;"string"!=typeof c&&(c=c.join(" ")),"string"!=typeof a&&(a=a.join(" ")),t.elements=c+" "+a,s(b)}function o(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function p(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=o(c));var g;return g=d.cache[a]?d.cache[a].cloneNode():f.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!g.canHaveChildren||e.test(a)||g.tagUrn?g:d.frag.appendChild(g)}function q(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||o(a);for(var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;g>e;e++)d.createElement(f[e]);return d}function r(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return t.shivMethods?p(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-:]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(t,b.frag)}function s(a){a||(a=b);var c=o(a);return!t.shivCSS||g||c.hasCSS||(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||r(a,c),a}var g,k,c="3.7.2",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,h="_html5shiv",i=0,j={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){g=!0,k=!0}}();var t={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:s,createElement:p,createDocumentFragment:q,addElements:n};a.html5=t,s(b)}(this,document);
+	</script>
+
+	<link rel="stylesheet" href="http://tbusser.net/static/css/site.css">
+	
+	
+	<!--[if lte IE 9]>
+	<script src="http://tbusser.net/static/js/shims/classList.js"></script>
+	<![endif]-->
+</head>
+
+<body id="scroll-top-target" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+		<ul class="skip-links">
+		<li><a href="#navigation-skip">Skip to navigation</a></li>
+		<li><a href="#content-skip">Skip to content</a></li>
+		<li><a href="#comments-skip">Skip to comments</a></li>
+	</ul>
+	<!--[if lte IE 9]>
+	<div class="high-attention-warning">
+		The browser you are using might not give you the best experience on this website. <a href="http://browsehappy.com/">Please upgrade</a> to a more recent web browser for a better experience.
+	</div>
+<![endif]-->
+		<header class="site-header" role="banner">
+		<a href="/">
+		<figure>
+			<img src="" alt="Headshot of Thijs Busser" class="headshot" data-is-responsive data-has-retina data-src="/static/img/headshot{modifier}-{breakpoint}.jpg">
+			<noscript>
+				<img src="/static/img/headshot2x-xl.jpg" alt="Headshot of Thijs Busser" class="headshot">
+			</noscript>
+		</figure>
+		<div class="alpha">
+				Something Awesome
+			</div>
+		</a>
+		<div>by Thijs Busser, front-end developer</div>
+	</header>
+	<main role="main" id="content-skip" tabindex="-1">
+		<h1 itemprop="name">Running unit tests on a continuous integration service like Travis CI or Wercker</h1>
+		<aside class="profile meta-data">
+			<h2>Article meta data</h2><dl>
+	<dt>Published on:</dt>
+	
+	<dd><time itemprop="datePublished" datetime="2014-09-12T10:00+01:00">Sep 12th, 2014</time></dd>
+
+	<dt>Comments:</dt><dd><a href="http://tbusser.net/articles/js-unit-testing-part-03/#disqus_thread"></a></dd>
+
+<dt>Tags:</dt><dd>
+			<a href="/tags/javascript/" rel="tag" title="See all articles tagged with JavaScript">JavaScript</a>
+		</dd><dd>
+			<a href="/tags/grunt/" rel="tag" title="See all articles tagged with Grunt">Grunt</a>
+		</dd><dd>
+			<a href="/tags/continuous-integration/" rel="tag" title="See all articles tagged with Continuous integration">Continuous integration</a>
+		</dd><dd>
+			<a href="/tags/unit-testing/" rel="tag" title="See all articles tagged with Unit testing">Unit testing</a>
+		</dd>
+</dl><meta itemprop="keywords" content="JavaScript Grunt Continuous integration Unit testing">
+
+		</aside>
+	<section class="introduction">
+	<h2 id="section1">Introduction</h2>
+	<p itemprop="description">
+		This is the last article in a series of three in which I explain how I setup my JavaScript unit testing with code coverage and getting it to run on a CI Server. <a href="/articles/js-unit-testing-part-01">First I described how to add unit testing</a> and then I showed how to <a href="/articles/js-unit-testing-part-02">configure Istanbul and Grunt to generate code coverage reports</a>. In this third step I will explain how I configured the project to use a continuous integration (CI) server like <a href="https://travis-ci.org">Travis CI</a> or <a href="http://wercker.com/">Wercker</a> to run the unit tests when changes are pushed to the Git server.
+	</p>
+
+	<section>
+		<h3 id="section1a">Series overview</h3>
+		<p>
+			This series consists of the following articles:
+		</p>
+		<ol>
+			<li><a href="/articles/js-unit-testing-part-01" rel="first">Part 1: JavaScript unit testing with Mocha and Grunt</a></li>
+			<li><a href="/articles/js-unit-testing-part-02" rel="prev">Part 2: Generating code coverage reports using Istanbul</a></li>
+			<li>Part 3: Running unit tests on a continuous integration service like Travis CI or Wercker</li>
+		</ol>
+	</section>
+
+	<section>
+		<h3 id="section1b">The demo project on GitHub</h3>
+		<p>
+			The <a href="https://github.com/tbusser/js-unit-test-demo">files of the demo project</a> are available on GitHub. For every step in getting the project setup there is separate branch in the repository. Whenever there is a branch with the current state of the code in the article I will make a mention of it in the text.
+		</p>
+	</section>
+</section>
+
+<section>
+	<h2 id="section2">Why Travis CI and Wercker?</h2>
+	<p>
+		It is a question which can easily be answered: they can both be used for free. In the case of Travis CI that is only true for public repositories but so is GitHub it depends on. Because I frequently use BitBucket instead of GitHub there was a need to look at some other service as well. Wercker was one of the few services I found that could be enjoyed for free. Right now it doesn't seem to have any subscription plan but according to a post in <a href="http://www.quora.com/What-are-the-alternatives-to-Travis-CI">this Quora thread</a> they plan to ask for money once they're out of beta.
+	</p>
+</section>
+
+<section>
+	<h2 id="section3">Common configuration</h2>
+	<p>
+		Before I explain the Travis CI and Wercker specific setups there is a bit of common ground between the two of them. For Node.js projects, the type of project this is, both will run the command <code>npm test</code> by default. Right now the command <code>npm test</code> will not have any effect when executed  in the project's root folder. It needs to be configured, this is something that is done in the <code>package.json</code> file.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+{
+    <span class="hljs-comment">// 1: The required fields to make this a valid package.json file.</span>
+    <span class="hljs-comment">// 2: The packages we need for this project, these have been added by</span>
+    <span class="hljs-comment">//    executing "npm install --save-dev &lt;package&gt;" in the first two parts.</span>
+    <span class="hljs-comment">// 3: This is the part to wire up "npm test" to run the grunt task. This is</span>
+    <span class="hljs-comment">//    done by adding the key "test" and give it the command</span>
+    <span class="hljs-comment">//    "grunt test:testonly". Now "npm test" will run the unit tests without</span>
+    <span class="hljs-comment">//    generating code coverage reports.</span>
+    <span class="hljs-string">"name"</span>: <span class="hljs-string">"unit-test-demo"</span>,     <span class="hljs-comment">/* [1] */</span>
+    <span class="hljs-string">"author"</span>: <span class="hljs-string">"Thijs Busser"</span>,     <span class="hljs-comment">/* [1] */</span>
+    <span class="hljs-string">"version"</span>: <span class="hljs-string">"1.0.0"</span>,           <span class="hljs-comment">/* [1] */</span>
+    <span class="hljs-string">"devDependencies"</span>: {          <span class="hljs-comment">/* [2] */</span>
+        <span class="hljs-string">"expect.js"</span>: <span class="hljs-string">"^0.3.1"</span>,
+        <span class="hljs-string">"grunt"</span>: <span class="hljs-string">"^0.4.5"</span>,
+        <span class="hljs-string">"grunt-mocha"</span>: <span class="hljs-string">"git+https://github.com/jonbretman/grunt-mocha.git"</span>,
+        <span class="hljs-string">"istanbul"</span>: <span class="hljs-string">"^0.3.2"</span>,
+        <span class="hljs-string">"load-grunt-config"</span>: <span class="hljs-string">"^0.13.1"</span>,
+        <span class="hljs-string">"mocha"</span>: <span class="hljs-string">"^1.21.4"</span>,
+        <span class="hljs-string">"requirejs"</span>: <span class="hljs-string">"^2.1.15"</span>
+    },
+    <span class="hljs-string">"scripts"</span>: {                  <span class="hljs-comment">/* [3] */</span>
+        <span class="hljs-string">"test"</span>: <span class="hljs-string">"grunt test:testonly"</span>
+    }
+}
+            </code></pre>
+		</div>
+		<figcaption class="listing">The package.json for the project</figcaption>
+	</figure>
+	<p>
+		Because the unit tests are run using a Grunt task it is necessary to make sure the CI will have the grunt-cli available before starting the tests. This is something to remember when configuring the task for the CI server.
+	</p>
+	<p>
+		For the next part it is necessary for the code to be hosted on either GitHub or BitBucket. In order to use Travis CI it will be necessary to use GitHub as there is no support for any other service.
+	</p>
+</section>
+
+<section>
+	<h2 id="section4">Travis CI</h2>
+	<p>
+		For Travis CI it is necessaryto add a configuration file in the root of the project, named <code>.travis.yml</code>. It is a fairly straight forward configuration for this demo project. Just make sure not to push the file to GitHub before going into Travis CI and have it monitor the repository.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs vala">
+<span class="hljs-preprocessor"># 1: This tells Travis CI it is a Node.js project, we need this to run our</span>
+<span class="hljs-preprocessor">#    packages.</span>
+<span class="hljs-preprocessor"># 2: It is possible to test your project on several versions of Node.js on each</span>
+<span class="hljs-preprocessor">#    run. Version 0.10 is the lastest stable release and is good enough for this</span>
+<span class="hljs-preprocessor">#    project.</span>
+<span class="hljs-preprocessor"># 3: Before Travis CI runs the "npm install" command it will run whatever we</span>
+<span class="hljs-preprocessor">#    specify here. Because we need the grunt-cli to be available so we can</span>
+<span class="hljs-preprocessor">#    start the unit tests we can instruct Travis CI to install it now.</span>
+language: node_js                 # [<span class="hljs-number">1</span>]
+node_js:
+  - <span class="hljs-string">"0.10"</span>                        # [<span class="hljs-number">2</span>]
+before_install:
+  - <span class="hljs-string">"npm install -g grunt-cli"</span>    # [<span class="hljs-number">3</span>]
+            </code></pre>
+		</div>
+		<figcaption class="listing">The .travis.yml file for the project</figcaption>
+	</figure>
+
+	<section>
+		<h3 id="section4a">Tell Travis CI to monitor the project</h3>
+		<p>
+			Before pushing the <code>.travis.yml</code> file to GitHub you need to tell Travis CI to start watching the project for changes. For the sake of brevity I will assume you have a Travis CI account and that it has access to your public GitHub repositories. Telling Travis CI to start monitoring the project is as simple as flicking a switch. Just to go the Travis CI profile page and turn the switch on.
+		</p>
+		<figure>
+			<div data-lazy-load alt="The switch to let Travis CI know it should monitor the repository" data-src="/static/img/post/js-unit-tests-01/travis-ci-switch.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/travis-ci-switch.jpg" alt="The switch to let Travis CI know it should monitor the repository">
+			</noscript>
+			<figcaption class="image">The switch to let Travis CI know it should monitor the repository</figcaption>
+		</figure>
+	</section>
+
+	<section>
+		<h3 id="section4b">Adding a status image to the project README.md</h3>
+		<p>
+			To let people looking the project on GitHub know the project passes the unit tests it is common to add a <code>README.md</code> to the project with a status button. To get the Markdown code for the button you need to enter the Travis CI page for your project, this can be done by clicking on the wrench in front of the on/off switch as seen in image 1.
+		</p>
+		<p>
+			At the top right of the project page you will see the current status which should read "build unknown" (box 1 in the image below), click on this and a dialog appears with a select box. Select the markdown option (box 2 in the image below) and it will show the Markdown code for the project's status image.
+		</p>
+		<figure>
+			<div data-lazy-load alt="Screenshot of the Travis CI project page showing which element to click to get the Markdown code for the status image" data-src="/static/img/post/js-unit-tests-01/travis-ci-status-image.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/travis-ci-status-image.jpg" alt="Screenshot of the Travis CI project page showing which element to click to get the Markdown code for the status image">
+			</noscript>
+			<figcaption class="image">Screenshot of the Travis CI project page showing which element to click to get the Markdown code for the status image</figcaption>
+		</figure>
+		<aside>
+			<h4>Download the code</h4>
+			<p>
+				The version of the project with the Travis CI configuration file and status image can be found <a href="https://github.com/tbusser/js-unit-test-demo/tree/005-travis-ci-configured">here</a>.
+			</p>
+		</aside>
+	</section>
+
+	<section>
+		<h3 id="section4c">See Travis CI at work</h3>
+		<p>
+			Once Travis CI is configured you can push the <code>.travis.yml</code> file to the repository on GitHub. If all went well Travis CI will detect the new commit and schedule the project in for a run. Once the project reaches the top of the queue the unit tests will be executed and the status should change to "build passing".
+		</p>
+		<figure>
+			<div data-lazy-load alt="Screenshot of the Travis CI project pages with a status indicator showing the build passes the unit test" data-src="/static/img/post/js-unit-tests-01/travis-build-passes.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/travis-build-passes.jpg" alt="Screenshot of the Travis CI project pages with a status indicator showing the build passes the unit test">
+			</noscript>
+			<figcaption class="image">Screenshot of the Travis CI project pages with a status indicator showing the build passes the unit test</figcaption>
+		</figure>
+	</section>
+</section>
+
+<section>
+	<h2 id="section5">Wercker</h2>
+	<p>
+		The setup for Wercker is not much different from Travis CI. It also needs a configuration file to let it know how to setup the project. For Wercker the file is called <code>wercker.yml</code> and needs to be in the root folder of the project.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs vala">
+<span class="hljs-preprocessor"># 1: This tells Wercker the project is a Node.js project.</span>
+<span class="hljs-preprocessor"># 2: This is a custom install step which we need to install the grunt-cli</span>
+<span class="hljs-preprocessor">#    package. We need this to run our unit tests.</span>
+<span class="hljs-preprocessor"># 3: This will run the "npm install" command, it will the Node.js packages we</span>
+<span class="hljs-preprocessor">#    need for the project.</span>
+<span class="hljs-preprocessor"># 4: This will run the command "npm test", we set it up in the package.json file</span>
+<span class="hljs-preprocessor">#    to run the command "grunt test:testonly".</span>
+box: wercker/nodejs                             # [<span class="hljs-number">1</span>]
+<span class="hljs-preprocessor"># Build definition</span>
+build:
+  steps:
+    - script:                                   # [<span class="hljs-number">2</span>]
+        name: install grunt-cli
+        code: sudo npm install -g grunt-cli
+    - npm-install                               # [<span class="hljs-number">3</span>]
+    - npm-test                                  # [<span class="hljs-number">4</span>]
+            </code></pre>
+		</div>
+		<figcaption class="listing">The wercker.yml file for the project</figcaption>
+	</figure>
+	<p>
+		Unlike Travis CI you can already push the file to the repository on GitHub or BitBucket. You can also wait until after the next step, this gives the opportunity to get the code for the Wercker build status image and push the configuration file together with a README.md with the current Wercker status.
+	</p>
+
+	<section>
+		<h3 id="section5a">Tell Wercker to monitor the project</h3>
+		<p>
+			Just like Travis CI Wercker needs to be told to monitor the project. In the Wercker interface you do this by adding an app. It will let you pick between adding a GitHub or BitBucket repository and once Werkcer has the necessary permission to access your repositories on the selected service you can select the repository you want it to monitor.
+		</p>
+		<figure>
+			<div data-lazy-load alt="Screenshot of the Wercker website showing the interface for selecting a project to monitor" data-src="/static/img/post/js-unit-tests-01/wercker-repository-select.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/wercker-repository-select.jpg" alt="Screenshot of the Wercker website showing the interface for selecting a project to monitor">
+			</noscript>
+			<figcaption class="image">Screenshot of the Wercker website showing the interface for selecting a project to monitor</figcaption>
+		</figure>
+		<p>
+			The rest of the setup process for public GitHub and Bitbucket repositories is just straight forward. Basically keep clicking next till you hit finish.
+		</p>
+	</section>
+
+	<section>
+		<h3 id="section5b">Adding a status image to the project README.md</h3>
+		<p>
+			Wercker also has a status image that can be displayed to show the status of the project. On the application overview page for the project there is a button "Badge" which will summon a dialog (Box 1 in the image below). Here you can pick the version you want and have the markdown code copied to your clipboard (Box 2 in the image below).
+		</p>
+		<figure>
+			<div data-lazy-load alt="Screenshot of the Wercker project page showing where to find the Markdown code for the status image" data-src="/static/img/post/js-unit-tests-01/wercker-status-image-selector.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/wercker-status-image-selector.jpg" alt="Screenshot of the Wercker project page showing where to find the Markdown code for the status image">
+			</noscript>
+			<figcaption class="image">Screenshot of the Wercker project page showing where to find the Markdown code for the status image</figcaption>
+		</figure>
+		<aside>
+			<h4>Download the code</h4>
+			<p>
+				The version of the project with the Wercker configuration file and status image can be found <a href="https://github.com/tbusser/js-unit-test-demo/tree/006-wercker-configured">here</a>.
+			</p>
+		</aside>
+	</section>
+
+	<section>
+		<h3 id="section5c">See Wercker at work</h3>
+		<p>
+			Now that everything is configured Wercker should run the unit tests when changes are pushed to the remote repository. If everything went well Wercker should show something similar to the image below.
+		</p>
+		<figure>
+			<div data-lazy-load alt="Screenshot showing the build for a commit passes the unit tests" data-src="/static/img/post/js-unit-tests-01/wercker-build-passes.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/wercker-build-passes.jpg" alt="Screenshot showing the build for a commit passes the unit tests">
+			</noscript>
+			<figcaption class="image">Screenshot showing the build for a commit passes the unit tests</figcaption>
+		</figure>
+	</section>
+
+	<section>
+		<h3 id="section5d">Wercker and private BitBucket repositories</h3>
+		<p>
+			Wercker can also be configured to work with a private BitBucket repositories. This is not that complicated to setup but it is easy to make the wrong choice in the setup wizard for a new app. Be sure the use the option <strong>Manually add the deployment key.</strong>. Upon selecting this option you will be presented with a SSH key. You need to copy this key, and go to your account settings on BitBucket. From the menu on the left select SSH keys (Box 1 in the image below) and use the Add key button (Box 2 in the image below)  to paste the key copied from Wercker.
+		</p>
+		<figure>
+			<div data-lazy-load alt="Screenshot showing the BitBucket account management page with the SSH Keys menu item opened" data-src="/static/img/post/js-unit-tests-01/bitbucket-sshkeys.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/bitbucket-sshkeys.jpg" alt="Screenshot showing the BitBucket account management page with the SSH Keys menu item opened">
+			</noscript>
+			<figcaption class="image">Screenshot showing the BitBucket account management page with the SSH Keys menu item opened</figcaption>
+		</figure>
+	</section>
+</section>
+
+<section>
+	<h2 id="section6">Wrapping up</h2>
+	<p>
+		That concludes this series. I've explained how I have added unit tests to my project using Mocha and Express.js. In addition to unit tests I've shown how to add code coverage reports using Istanbul. In this part I've demonstrated how to setup the project to run the unit tests on a CI server like Travis CI or Wercker. This covers our bases and ensures unit tests are an integral part of the development process.
+	</p>
+	<p>
+		They way the Grunt tasks are setup they will work just as well in a larger project as they did in this small example. They way I have it setup it requires a manual action to run the tests during development but it shouldn't be a problem to have them run automatically using a Grunt file watcher or something else.
+	</p>
+</section>
+	<aside id="comments-skip" tabindex="-1">
+			<h2 id="disqus_thread">Comments</h2>
+			<p id="comments-js">I use Disqus for the comments on my website. If you want to see the comments or post your own, please visit this page with JavaScript enabled.</p>
+		</aside>
+	</main>
+	<nav class="article-navigation">
+				<h2 class="visually-hidden">Navigate to other articles</h2>
+				<a href="/articles/calendar" class="newer" title="Go to the next, newer article">A VanillaJS Date / Time picker</a>
+				<a href="/articles/js-unit-testing-part-02" class="older" title="Go to the previous, older article">Generating code coverage reports using Istanbul</a>
+			</nav>
+	<footer class="site-footer">
+
+	<a href="#scroll-top-target"><span>Back to top</span></a>
+
+	<div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+		<meta itemprop="url" content="https://plus.google.com/105989274339589747997/about">
+		<ul class="social-links">
+			<li>
+				<a href="https://www.linkedin.com/pub/thijs-busser/33/11a/b4b" title="Thijs Busser on Linked In"><span>Linked In</span></a>
+			</li>
+			<li>
+				<a href="http://plus.google.com/105989274339589747997/about" rel="author" title="Thijs Busser on Google Plus"><span>Google Plus</span></a>
+			</li>
+			<li>
+				<a href="http://twitter.com/tbusser" title="Thijs Busser on Twitter"><span>Twitter</span></a>
+			</li>
+			<li>
+				<a href="/feed.xml" title="RSS Feed"><span>RSS</span></a>
+			</li>
+		</ul>
+
+		<p>©2014 by <a href="/about-me"><span itemprop="name">Thijs Busser</span></a>. All original content on this website is published under <a href="http://creativecommons.org/licenses/by/4.0/">license</a>.</p>
+	</div>
+</footer>
+	<script src="/static/js/site/built.js"></script><script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-49038202-1', 'tbusser.net');
+			ga('send', 'pageview');
+		</script>
+
+<script>
+	require.config({
+		baseUrl: '/static/js/site'
+	});
+
+	(function() {
+		'use strict';
+
+		var tests = [
+				{test: '[data-is-responsive], [data-lazy-load]', module: 'images'},
+				{test: '[href="#scroll-top-target"]', module: 'scroll-to-top'}
+			],
+			modules = [];
+
+		for (var index=0,ubound=tests.length; index<ubound; index++) {
+			if (document.querySelectorAll(tests[index].test).length > 0) {
+				modules.push(tests[index].module);
+			}
+		}
+
+		if (modules.length > 0) {
+			require(modules, function(modules) {
+				// Loop through the arguments object, it will hold the modules we wanted to load
+				for (var index=0,ubound=arguments.length; index<ubound; index++) {
+					// Create an instance of the module, to do this we need to make sure it is a function
+					if (typeof arguments[index] === 'function') {
+						var module = new arguments[index];
+					}
+				}
+			});
+		}
+	})();
+</script>
+
+</body>
+</html>

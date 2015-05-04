@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="JavaScript unit testing using Mocha, Express.js and Grunt">
+	
+	<!-- Open Graph metatags-->
+	<meta property="article:author" content="https://www.facebook.com/thijsbusser">
+	<meta property="article:section" content="development">
+		
+	<meta property="article:tag" content="JavaScript">
+			<meta property="article:tag" content="Grunt">
+			<meta property="article:tag" content="Mocha">
+			<meta property="article:tag" content="Unit testing">
+			
+	<meta property="og:description" content="JavaScript unit testing using Mocha, Express.js and Grunt">
+	
+	<meta property="og:site_name" content="Something Awesome | Thijs Busser's Blog">
+	<meta property="og:title" content="JavaScript unit testing with Mocha and Grunt | Something Awesome">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="http://tbusser.net/articles/js-unit-testing-part-01/index.html">
+
+	<!-- Twitter card -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:creator" content="@tbusser">
+	<title>JavaScript unit testing with Mocha and Grunt | Something Awesome</title>
+	<!-- The HTML5Shiv inlined as recommended by Paul Irish in this post: https://github.com/Modernizr/Modernizr/issues/878#issuecomment-41448059 -->
+	<script>
+		!function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=t.elements;return"string"==typeof a?a.split(" "):a}function n(a,b){var c=t.elements;"string"!=typeof c&&(c=c.join(" ")),"string"!=typeof a&&(a=a.join(" ")),t.elements=c+" "+a,s(b)}function o(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function p(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=o(c));var g;return g=d.cache[a]?d.cache[a].cloneNode():f.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!g.canHaveChildren||e.test(a)||g.tagUrn?g:d.frag.appendChild(g)}function q(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||o(a);for(var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;g>e;e++)d.createElement(f[e]);return d}function r(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return t.shivMethods?p(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-:]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(t,b.frag)}function s(a){a||(a=b);var c=o(a);return!t.shivCSS||g||c.hasCSS||(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||r(a,c),a}var g,k,c="3.7.2",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,h="_html5shiv",i=0,j={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){g=!0,k=!0}}();var t={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:s,createElement:p,createDocumentFragment:q,addElements:n};a.html5=t,s(b)}(this,document);
+	</script>
+
+	<link rel="stylesheet" href="http://tbusser.net/static/css/site.css">
+	
+	
+	<!--[if lte IE 9]>
+	<script src="http://tbusser.net/static/js/shims/classList.js"></script>
+	<![endif]-->
+</head>
+
+<body id="scroll-top-target" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+		<ul class="skip-links">
+		<li><a href="#navigation-skip">Skip to navigation</a></li>
+		<li><a href="#content-skip">Skip to content</a></li>
+		<li><a href="#comments-skip">Skip to comments</a></li>
+	</ul>
+	<!--[if lte IE 9]>
+	<div class="high-attention-warning">
+		The browser you are using might not give you the best experience on this website. <a href="http://browsehappy.com/">Please upgrade</a> to a more recent web browser for a better experience.
+	</div>
+<![endif]-->
+		<header class="site-header" role="banner">
+		<a href="/">
+		<figure>
+			<img src="" alt="Headshot of Thijs Busser" class="headshot" data-is-responsive data-has-retina data-src="/static/img/headshot{modifier}-{breakpoint}.jpg">
+			<noscript>
+				<img src="/static/img/headshot2x-xl.jpg" alt="Headshot of Thijs Busser" class="headshot">
+			</noscript>
+		</figure>
+		<div class="alpha">
+				Something Awesome
+			</div>
+		</a>
+		<div>by Thijs Busser, front-end developer</div>
+	</header>
+	<main role="main" id="content-skip" tabindex="-1">
+		<h1 itemprop="name">JavaScript unit testing with Mocha and Grunt</h1>
+		<aside class="profile meta-data">
+			<h2>Article meta data</h2><dl>
+	<dt>Published on:</dt>
+	
+	<dd><time itemprop="datePublished" datetime="2014-09-10T11:10+01:00">Sep 10th, 2014</time></dd>
+
+	<dt>Comments:</dt><dd><a href="http://tbusser.net/articles/js-unit-testing-part-01/#disqus_thread"></a></dd>
+
+<dt>Tags:</dt><dd>
+			<a href="/tags/javascript/" rel="tag" title="See all articles tagged with JavaScript">JavaScript</a>
+		</dd><dd>
+			<a href="/tags/grunt/" rel="tag" title="See all articles tagged with Grunt">Grunt</a>
+		</dd><dd>
+			<a href="/tags/mocha/" rel="tag" title="See all articles tagged with Mocha">Mocha</a>
+		</dd><dd>
+			<a href="/tags/unit-testing/" rel="tag" title="See all articles tagged with Unit testing">Unit testing</a>
+		</dd>
+</dl><meta itemprop="keywords" content="JavaScript Grunt Mocha Unit testing">
+
+		</aside>
+	<section class="introduction">
+	<h2 id="section1">Introduction</h2>
+	<p itemprop="description">
+		This is the first article in a series of three in which I will explain how I have setup unit testing for a JavaScript module. It documents the initial project setup and explains in a step-by-step fashion what I have done to get it up in running. In future articles I will explain how to add code coverage reports and integration with a continuous integration (CI) server.
+	</p>
+	<section>
+		<h3 id="section1a">Series overview</h3>
+		<p>
+			This series consists of the following articles:
+		</p>
+		<ol>
+			<li>Part 1: JavaScript unit testing with Mocha and Grunt</a></li>
+			<li><a href="/articles/js-unit-testing-part-02" rel="next">Part 2: Generating code coverage reports using Istanbul</a></li>
+			<li><a href="/articles/js-unit-testing-part-03" rel="last">Part 3: Running unit tests on a continuous integration service like Travis CI or Wercker</a></li>
+		</ol>
+	</section>
+
+	<section>
+		<h3 id="section1b">The demo project on GitHub</h3>
+		<p>
+			The <a href="https://github.com/tbusser/js-unit-test-demo">files of the demo project</a> are available on GitHub. For every step in getting the project setup there is separate branch in the repository. Whenever there is a branch with the current state of the code in the article I will make a mention of it in the text.
+		</p>
+	</section>
+</section>
+
+<section>
+	<h2 id="section2">Intial setup</h2>
+	<p>
+		My demo project for this document is a very simple one, you can easily create it yourself. It looks like this, names in <code>[]</code> are folders:
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs 1c">
+Project Folder
+  <span class="hljs-string">|- [grunt]</span>
+  <span class="hljs-string">|- [lib]</span>
+  <span class="hljs-string">|    |- Example.js</span>
+  <span class="hljs-string">|- [test]</span>
+  <span class="hljs-string">|    |- [spec]</span>
+  <span class="hljs-string">|- package.json</span>
+            </code></pre>
+		</div>
+		<figcaption class="listing">Project folder layout</figcaption>
+	</figure>
+	<p>
+		The following should be said about the files:
+	</p>
+	<ul>
+		<li>
+			<code>[grunt]</code>: I always use <code>load-grunt-config</code> for my Gruntfile. In this folder we will place the configuration for the various tasks.
+		</li>
+		<li>
+			<code>[test]</code>: this is the folder which eventually will be where the unit tests and wrapper are stored in.
+		</li>
+		<li>
+			<code>[test/spec]</code>: this is the folder where the unit tests will be stored in.
+		</li>
+		<li>
+			<code>package.json</code>: just a boilerplate version of the file. It only needs the keys <code>author</code>, <code>name</code>, and <code>version</code> for it to be a valid file.
+		</li>
+		<li>
+			<code>Example.js</code>: this is the module we will be unit testing. The only thing noteworthy about my use case is that my module was an AMD-module and would be loaded using <a href="http://requirejs.org/">Require.js</a>. For the remainder of this article we will assume the module is this:
+		</li>
+	</ul>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+define([], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+
+    };
+
+    exports.prototype = {
+        add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(valueA, valueB)</span> {</span>
+            <span class="hljs-keyword">return</span> valueA + valueB;
+        }
+    };
+
+    <span class="hljs-keyword">return</span> exports;
+});
+            </code></pre>
+		</div>
+		<figcaption class="listing">Example.js</figcaption>
+	</figure>
+	<aside>
+		<h3>Download the code</h3>
+		<p>
+			The bare project setup can be found in the <a href="https://github.com/tbusser/js-unit-test-demo">main branch</a> of the GitHub repository.
+		</p>
+	</aside>
+	<p>
+		To run the unit test I will be using a Grunt task, this means we need to install the task runner with the command:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install --save-dev grunt</code></pre>
+
+	<p>
+		If you're following along and you haven't installd the grunt-cli yet on your system then you can do so using the following command:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install -g grunt-cli</code></pre>
+
+	<p>
+		We also need to install the `load-grunt-config` module for making the `Gruntfile.js` more modular and less verbose.
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install --save-dev load-grunt-config</code></pre>
+
+	<p>
+		As I explained for `Example.js`, I am using AMD-modules and the unit tests will also be written as AMD-modules. This makes the require library another necessity for the project. It can be added like this:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install --save-dev requirejs</code></pre>
+</section>
+
+<section>
+	<h2 id="section3">Unit test framework</h2>
+	<p>
+		There are many unit test frameworks, all of them have their own strengths and weaknesses. I've looked at <a href="http://jasmine.github.io/">Jasmine</a>, <a href="http://visionmedia.github.io/mocha/">Mocha</a>, <a href="http://theintern.io/">Intern</a>, <a href="http://karma-runner.github.io/0.12/index.html">Karma</a>, and some others I've already forgotten about. In the end I settled on Mocha, it has the features I was looking for and I came across some good tutorials on how to set it up. To add Mocha to the project the following command can be executed:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install --save-dev mocha</code></pre>
+	<p>
+		There is a Grunt task which will allow you to run Mocha specs in a headless browser (PhantomJS), this is exactly what I was looking for. The original project can be found at <a href="https://github.com/kmiyashiro/grunt-mocha">grunt-mocha</a>. This is however not the version I wound up using. I also wanted code coverage reports and to get this to work with Mocha there is a small modification needed for grunt-mocha. This modification has already been done by Jon Bretman and his version can be installed using the following command:
+	</p>
+	<pre class="highlight"><code class="hljs javascript">npm install --save-dev git+https:<span class="hljs-comment">//github.com/jonbretman/grunt-mocha.git</span></code></pre>
+	<p>
+		For me the command wouldn't execute properly without the <code>git+https</code> part but your milage may vary. If you're interested in exactly what has been changed in order to support code coverage, you can see the changes <a href="https://github.com/jonbretman/grunt-mocha/compare/kmiyashiro:master...master">here</a>.
+	</p>
+
+	<section>
+		<h3 id="section3a">Assertion library</h3>
+		<p>
+			With the testing framework sorted it was necessary to pick an assertion library. There is the <code>assert</code> style.
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs javascript">
+assert.ok(<span class="hljs-literal">true</span>, <span class="hljs-string">'everything is okay'</span>).
+                </code></pre>
+			</div>
+			<figcaption class="listing">Assert style test</figcaption>
+		</figure>
+		<p>
+			To me this wasn't the most intuitive way to read and write my unit tests. Luckily there are two other styles which are more geared towards behaviour-driven development (BDD), <code>should</code> and <code>expect</code>.
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs javascript">
+<span class="hljs-keyword">var</span> foo = <span class="hljs-string">'bar'</span>;
+
+foo.should.equal(<span class="hljs-string">'bar'</span>);
+expect(foo).to.be(<span class="hljs-string">'bar'</span>);
+                </code></pre>
+			</div>
+			<figcaption class="listing">Should and Expect styles</figcaption>
+		</figure>
+		<p>
+			The <code>expect</code> style felt the most natural to me so that is what I went with. The library I picked is <a href="https://github.com/LearnBoost/expect.js/">Expect.js</a> and it can be installed with the following command:
+		</p>
+		<pre class="highlight"><code class="hljs javascript">npm install --save-dev expect.js</code></pre>
+		<p>
+			On the Expect.js GitHub page there are some people who have voiced concerns about the lack of project updates. At the time of writing the last update was about 7 months ago. The other popular expect style library I came across, <a href="http://chaijs.com/">Chai</a>, shows the same kind of inactivity. Therefore I don't think it makes a huge difference which one you pick. So far I've not run into any issues with Expect.js.
+		</p>
+		<aside>
+			<h4>Download the code</h4>
+			<p>
+				The project with all devDependencies added can be found in <a href="https://github.com/tbusser/js-unit-test-demo/tree/001-basic-packages-installed">this</a> branch.
+			</p>
+		</aside>
+	</section>
+</section>
+
+<section>
+	<h2 id="section4">Add a unit test</h2>
+	<p>
+		I will not go into detail about how to write unit tests. For this article it is enough to have a simple test which checks if 1 plus 1 equals 2.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+define([<span class="hljs-string">'Example'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Example)</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-keyword">var</span> example;
+    beforeEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        example = <span class="hljs-keyword">new</span> Example();
+    });
+
+    describe(<span class="hljs-string">'Example'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        it(<span class="hljs-string">'should have a method named "add"'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            expect(example.add).to.be.a(<span class="hljs-string">'function'</span>);
+        });
+
+        describe(<span class="hljs-string">'.add()'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            it(<span class="hljs-string">'should return the sum of two numbers'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                expect(example.add(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)).to.be(<span class="hljs-number">2</span>);
+            });
+        });
+    });
+});
+            </code></pre>
+		</div>
+		<figcaption class="listing">The unit test for Example.js</figcaption>
+	</figure>
+	<p>
+		This unit test can be saved as <code>/test/spec/Example.spec.js</code>. This takes care of the unit test but now we still need a way to run it using Mocha. The solution I will be explaining works when you just have a single spec file or if you have multiple spec files. It is a bit of an overkill for this example but it makes the solution usable for larger projects.
+	</p>
+
+	<section>
+		<h3 id="section4a">HTML test runner</h3>
+		<p>
+			First off I need and HTML-file which will serve as the test runner. Because I want something reusable I am going to use some placeholders which will get replaced by the actual values using a Grunt task. The template for the test runner looks like this:
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs xml">
+<span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"utf-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Mocha<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- This will include Mocha's default look &amp; feel --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"../node_modules/mocha/mocha.css"</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- We need Mocha itself --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"../node_modules/mocha/mocha.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- This will load the assertion library --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"../node_modules/expect.js/index.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- This will add require.js for loading the AMD-modules --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"../node_modules/requirejs/require.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- This is the container Mocha will use to display the test results --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"mocha"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+        <span class="hljs-comment">// Setup Mocha</span>
+        mocha.setup(<span class="hljs-string">'bdd'</span>);
+        <span class="hljs-comment">// Configure the require library. We're using two placeholders so we can use</span>
+        <span class="hljs-comment">// Grunt to configure the HTML file the specs we want.</span>
+        <span class="hljs-built_in">require</span>.config({
+            baseUrl: {{ baseUrl }},
+            deps: {{ tests }},
+            callback: mocha.run
+        });
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+                </code></pre>
+			</div>
+			<figcaption class="listing">Template for the HTML test runner</figcaption>
+		</figure>
+		<p>
+			This file will be saved as <code>test/index.template.html</code>. With the template file completed it is time to setup Grunt to replace those two placeholders with actual values.
+		</p>
+	</section>
+
+	<section>
+		<h3 id="section4b">Grunt test task</h3>
+		<p>
+			For Grunt it is necessary to have a <code>Gruntfile.js</code> file in the root folder, this file holds the definition of the Grunt tasks and their targets. Because I use <code>load-grunt-config</code> the initial file will look like this:
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs javascript">
+module.exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(grunt)</span> {</span>
+<span class="hljs-pi">  'use strict'</span>;
+
+  <span class="hljs-comment">// load the grunt setup</span>
+  <span class="hljs-built_in">require</span>(<span class="hljs-string">'load-grunt-config'</span>)(grunt);
+};
+                </code></pre>
+			</div>
+			<figcaption class="listing">The basic Gruntfile.js</figcaption>
+		</figure>
+		<p>
+			For more information on how to use and configure your Grunt tasks with <code>load-grunt-config</code>, you can read the documentation <a href="https://github.com/firstandthird/load-grunt-config">here</a> or <a href="http://www.html5rocks.com/en/tutorials/tooling/supercharging-your-gruntfile/">this great tutorial</a> by HTML5Rocks.
+		</p>
+		<p>
+			Now we need to add a test task, we can add the following code after the <code>require</code> statement in <code>Gruntfile.js</code>:
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs javascript">
+<span class="hljs-comment">// When we add support for code coverage the test task will have two targets.</span>
+<span class="hljs-comment">// Because of this I am using grunt.registerMultiTask instead of using</span>
+<span class="hljs-comment">// grunt.registerTask.</span>
+grunt.registerMultiTask(<span class="hljs-string">'test'</span>, <span class="hljs-string">'Run JS Unit tests'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">// Get the options for the current target</span>
+    <span class="hljs-keyword">var</span> options = <span class="hljs-keyword">this</span>.options();
+    <span class="hljs-comment">// In the options for the task you can configure which spec files should be</span>
+    <span class="hljs-comment">// run. We use this to create a list of file names which we can insert into</span>
+    <span class="hljs-comment">// the {{ tests }} placeholder in our HTML template</span>
+    <span class="hljs-keyword">var</span> tests = grunt.file.expand(options.files).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(file)</span> {</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'../'</span> + file;
+    });
+
+    <span class="hljs-comment">// build the template by replacing the placeholders for their actual values</span>
+    <span class="hljs-keyword">var</span> template = grunt.file.read(options.template).replace(<span class="hljs-string">'{{ tests }}'</span>, <span class="hljs-built_in">JSON</span>.stringify(tests)).replace(<span class="hljs-string">'{{ baseUrl }}'</span>, <span class="hljs-built_in">JSON</span>.stringify(options.baseUrl));
+
+    <span class="hljs-comment">// write template to tests directory</span>
+    grunt.file.write(options.runner, template);
+
+    <span class="hljs-comment">// Run the tests.</span>
+    grunt.task.run(<span class="hljs-string">'mocha:test'</span>);
+});
+                </code></pre>
+			</div>
+			<figcaption class="listing">Grunt test task</figcaption>
+		</figure>
+		<p>
+			With the Grunt task registered we need to configure it. We will create a new file named <code>grunt/test.js</code>, this needs to have the same name as the task we registered, with the following content:
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs javascript">
+module.exports = {
+    <span class="hljs-comment">// Configure the test task with the following options:</span>
+    <span class="hljs-comment">// 1: The name of the HTML template file, this is the file with the</span>
+    <span class="hljs-comment">//    placeholders.</span>
+    <span class="hljs-comment">// 2: This is the filename that is used to write the modified template to, it</span>
+    <span class="hljs-comment">//    is the file that we will run with Mocha.</span>
+    <span class="hljs-comment">// 3: The pattern for the spec files to include in the test runner, you can</span>
+    <span class="hljs-comment">//    use a glob pattern for this.</span>
+    options: {
+        template: <span class="hljs-string">'test/index.template.html'</span>, <span class="hljs-comment">/* [1] */</span>
+        runner: <span class="hljs-string">'test/index.html'</span>,            <span class="hljs-comment">/* [2] */</span>
+        files: <span class="hljs-string">'test/spec/**/*.js'</span>            <span class="hljs-comment">/* [3] */</span>
+    },
+
+    <span class="hljs-comment">// Configure the testonly target</span>
+    <span class="hljs-comment">// 4: This is the path where the JavaScript files to test are located, it is</span>
+    <span class="hljs-comment">//    relative to the /test folder.</span>
+    testonly: {
+        options: {
+            baseUrl: <span class="hljs-string">'../lib'</span>                 <span class="hljs-comment">/* [4] */</span>
+        }
+    }
+};
+                </code></pre>
+			</div>
+			<figcaption class="listing">Configuration for the test task</figcaption>
+		</figure>
+		<p>
+			Because our test task will in turn call the Mocha Grunt task we will also have to configure this. To do this we need to create a file named <code>grunt/mocha.js</code> and give it the following content:
+		</p>
+		<figure>
+			<div class="break-out">
+				<pre class="highlight"><code class="hljs javascript">
+module.exports = {
+    <span class="hljs-comment">// Configure the Mocha task with the following options:</span>
+    <span class="hljs-comment">// 1: The default reporter, Dot, just shows dots as output, that is not very</span>
+    <span class="hljs-comment">//    informative. The Spec reporter is more verbose and shows all the test</span>
+    <span class="hljs-comment">//    descriptions and results.</span>
+    <span class="hljs-comment">// 2: The test should not start automatically. We will start it manually in</span>
+    <span class="hljs-comment">//    our index.html file.</span>
+    options: {
+        reporter: <span class="hljs-string">'Spec'</span>,         <span class="hljs-comment">/* [1] */</span>
+        run: <span class="hljs-literal">false</span>                <span class="hljs-comment">/* [2] */</span>
+    },
+    <span class="hljs-comment">// Configure the test target</span>
+    <span class="hljs-comment">// 3: This is the path to the HTML test runner</span>
+    test: {
+        src: <span class="hljs-string">'test/index.html'</span>    <span class="hljs-comment">/* [3] */</span>
+    }
+};
+                </code></pre>
+			</div>
+			<figcaption class="listing">Configuration for the mocha task</figcaption>
+		</figure>
+		<aside>
+			<h4>Download the code</h4>
+			<p>
+				The version of the project with the Grunt configuration for the unit tests completed can be found <a href="https://github.com/tbusser/js-unit-test-demo/tree/002-unit-test-configured">here</a>.
+			</p>
+		</aside>
+	</section>
+
+	<section>
+		<h3 id="section4c">Running the test</h3>
+		<p>
+			Now that everthing is configured we can run the unit test. To run the test use the following command:
+		</p>
+		<pre class="highlight"><code class="hljs javascript">grunt test:testonly</code></pre>
+		<p>This results in the following output in the terminal as shown in the image below. As you can see both tests passed.</p>
+		<figure>
+			<div data-lazy-load alt="Result from the unit test, showing all tests passed" data-src="/static/img/post/js-unit-tests-01/unittest-output.jpg"></div>
+			<noscript>
+				<img src="/static/img/post/js-unit-tests-01/unittest-output.jpg" alt="Result from the unit test, showing all tests passed">
+			</noscript>
+			<figcaption class="image">The result from the unit test</figcaption>
+		</figure>
+	</section>
+</section>
+
+<section>
+	<h2 id="section5">Wrapping up</h2>
+	<p>
+		So far I've added a unit test and configured Mocha to be run using a Grunt task. The Grunt task has been made configurable so it is easy to share the task over multiple projects. In this example it only runs a single spec file but it can run multiple spec files just as easy. In the next part I will explain how I have added Istanbul code coverage to the project.
+	</p>
+</section>
+	<aside id="comments-skip" tabindex="-1">
+			<h2 id="disqus_thread">Comments</h2>
+			<p id="comments-js">I use Disqus for the comments on my website. If you want to see the comments or post your own, please visit this page with JavaScript enabled.</p>
+		</aside>
+	</main>
+	<nav class="article-navigation">
+				<h2 class="visually-hidden">Navigate to other articles</h2>
+				<a href="/articles/js-unit-testing-part-02" class="newer" title="Go to the next, newer article">Generating code coverage reports using Istanbul</a>
+				<a href="/articles/disqus-on-demand" class="older" title="Go to the previous, older article">Load Disqus comments on demand</a>
+			</nav>
+	<footer class="site-footer">
+
+	<a href="#scroll-top-target"><span>Back to top</span></a>
+
+	<div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+		<meta itemprop="url" content="https://plus.google.com/105989274339589747997/about">
+		<ul class="social-links">
+			<li>
+				<a href="https://www.linkedin.com/pub/thijs-busser/33/11a/b4b" title="Thijs Busser on Linked In"><span>Linked In</span></a>
+			</li>
+			<li>
+				<a href="http://plus.google.com/105989274339589747997/about" rel="author" title="Thijs Busser on Google Plus"><span>Google Plus</span></a>
+			</li>
+			<li>
+				<a href="http://twitter.com/tbusser" title="Thijs Busser on Twitter"><span>Twitter</span></a>
+			</li>
+			<li>
+				<a href="/feed.xml" title="RSS Feed"><span>RSS</span></a>
+			</li>
+		</ul>
+
+		<p>©2014 by <a href="/about-me"><span itemprop="name">Thijs Busser</span></a>. All original content on this website is published under <a href="http://creativecommons.org/licenses/by/4.0/">license</a>.</p>
+	</div>
+</footer>
+	<script src="/static/js/site/built.js"></script><script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-49038202-1', 'tbusser.net');
+			ga('send', 'pageview');
+		</script>
+
+<script>
+	require.config({
+		baseUrl: '/static/js/site'
+	});
+
+	(function() {
+		'use strict';
+
+		var tests = [
+				{test: '[data-is-responsive], [data-lazy-load]', module: 'images'},
+				{test: '[href="#scroll-top-target"]', module: 'scroll-to-top'}
+			],
+			modules = [];
+
+		for (var index=0,ubound=tests.length; index<ubound; index++) {
+			if (document.querySelectorAll(tests[index].test).length > 0) {
+				modules.push(tests[index].module);
+			}
+		}
+
+		if (modules.length > 0) {
+			require(modules, function(modules) {
+				// Loop through the arguments object, it will hold the modules we wanted to load
+				for (var index=0,ubound=arguments.length; index<ubound; index++) {
+					// Create an instance of the module, to do this we need to make sure it is a function
+					if (typeof arguments[index] === 'function') {
+						var module = new arguments[index];
+					}
+				}
+			});
+		}
+	})();
+</script>
+
+</body>
+</html>

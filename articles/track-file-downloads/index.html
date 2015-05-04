@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="This article explains how to track in page file downloads using the new Universal Google Analytics.">
+	
+	<!-- Open Graph metatags-->
+	<meta property="article:author" content="https://www.facebook.com/thijsbusser">
+	<meta property="article:section" content="development">
+		
+	<meta property="article:tag" content="Google Analytics">
+			
+	<meta property="og:description" content="This article explains how to track in page file downloads using the new Universal Google Analytics.">
+	
+	<meta property="og:site_name" content="Something Awesome | Thijs Busser's Blog">
+	<meta property="og:title" content="Track file downloads with Google&#x27;s Universal Analytics | Something Awesome">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="http://tbusser.net/articles/track-file-downloads/index.html">
+
+	<!-- Twitter card -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:creator" content="@tbusser">
+	<title>Track file downloads with Google&#x27;s Universal Analytics | Something Awesome</title>
+	<!-- The HTML5Shiv inlined as recommended by Paul Irish in this post: https://github.com/Modernizr/Modernizr/issues/878#issuecomment-41448059 -->
+	<script>
+		!function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=t.elements;return"string"==typeof a?a.split(" "):a}function n(a,b){var c=t.elements;"string"!=typeof c&&(c=c.join(" ")),"string"!=typeof a&&(a=a.join(" ")),t.elements=c+" "+a,s(b)}function o(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function p(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=o(c));var g;return g=d.cache[a]?d.cache[a].cloneNode():f.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!g.canHaveChildren||e.test(a)||g.tagUrn?g:d.frag.appendChild(g)}function q(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||o(a);for(var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;g>e;e++)d.createElement(f[e]);return d}function r(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return t.shivMethods?p(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-:]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(t,b.frag)}function s(a){a||(a=b);var c=o(a);return!t.shivCSS||g||c.hasCSS||(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||r(a,c),a}var g,k,c="3.7.2",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,h="_html5shiv",i=0,j={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){g=!0,k=!0}}();var t={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:s,createElement:p,createDocumentFragment:q,addElements:n};a.html5=t,s(b)}(this,document);
+	</script>
+
+	<link rel="stylesheet" href="http://tbusser.net/static/css/site.css">
+	
+	
+	<!--[if lte IE 9]>
+	<script src="http://tbusser.net/static/js/shims/classList.js"></script>
+	<![endif]-->
+</head>
+
+<body id="scroll-top-target" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+		<ul class="skip-links">
+		<li><a href="#navigation-skip">Skip to navigation</a></li>
+		<li><a href="#content-skip">Skip to content</a></li>
+		<li><a href="#comments-skip">Skip to comments</a></li>
+	</ul>
+	<!--[if lte IE 9]>
+	<div class="high-attention-warning">
+		The browser you are using might not give you the best experience on this website. <a href="http://browsehappy.com/">Please upgrade</a> to a more recent web browser for a better experience.
+	</div>
+<![endif]-->
+		<header class="site-header" role="banner">
+		<a href="/">
+		<figure>
+			<img src="" alt="Headshot of Thijs Busser" class="headshot" data-is-responsive data-has-retina data-src="/static/img/headshot{modifier}-{breakpoint}.jpg">
+			<noscript>
+				<img src="/static/img/headshot2x-xl.jpg" alt="Headshot of Thijs Busser" class="headshot">
+			</noscript>
+		</figure>
+		<div class="alpha">
+				Something Awesome
+			</div>
+		</a>
+		<div>by Thijs Busser, front-end developer</div>
+	</header>
+	<main role="main" id="content-skip" tabindex="-1">
+		<h1 itemprop="name">Track file downloads with Google&#x27;s Universal Analytics</h1>
+		<aside class="profile meta-data">
+			<h2>Article meta data</h2><dl>
+	<dt>Published on:</dt>
+	
+	<dd><time itemprop="datePublished" datetime="2014-04-05T22:15+01:00">Apr 5th, 2014</time></dd>
+
+	<dt>Comments:</dt><dd><a href="http://tbusser.net/articles/track-file-downloads/#disqus_thread"></a></dd>
+
+<dt>Tags:</dt><dd>
+			<a href="/tags/google-analytics/" rel="tag" title="See all articles tagged with Google Analytics">Google Analytics</a>
+		</dd>
+</dl><meta itemprop="keywords" content="Google Analytics">
+
+		</aside>
+	<section>
+	<h2 class="visually-hidden">Introduction</h2>
+	<p class="bigger-text" itemprop="description">
+		I wanted to track which version of the <a href="/articles/radial-menu">Radial Menu mixin</a> was more popular. Since I already use Google Analytics for the page views it was logical to use it to track the file downloads. It took a couple of tries and wading through some poor examples on various websites before I had something that worked for me. In this article I will explain how I am counting file downloads using Google Analytics events.
+	</p>
+</section>
+
+<section>
+	<h2>The basics</h2>
+	<p>
+		In theory it is a simple exercise, especially if you already have Google Analytics setup for your website. It should be as easy as adding some code in de the <code>onclick</code> handler of your anchor element and calling the <code>ga</code> method.
+	</p>
+	<figure>
+		<div class="break-out html">
+		<pre class="highlight"><code class="hljs xml">
+<span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"ga('send', 'event', 'category', 'download', 'label', 'value');"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/static/articles/radial-menu/radial-menu-less.zip"</span>&gt;</span>LESS version of the mixin<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+        </code></pre>
+		</div>
+		<figcaption class="listing">This doesn't work</figcaption>
+	</figure>
+	<p>
+		That was my first attempt, it failed miserably. Part of it was my fault for not reading <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events">Google's track event documentation</a> properly. The value of the last parameter has to be a number and I was passing a string.
+	</p>
+	<p>
+		The other problem was obvious once I opened the network tab of the Google Chrome debugger. My track event was canceled, according to the debugger so was the request for the zip file. But unlike the zip file which was waiting for me in the download folder, Google Analytics never received the event.
+	</p>
+	<figure>
+		<div data-lazy-load data-is-responsive="['m','s','xs']" alt="Cutout of the Google Chrome debugger network tab showing the cancelled request to send the Google event." data-src="/static/img/post/track-file-downloads/listing-1-network-{breakpoint}.png"></div>
+		<noscript>
+			<img src="/static/img/post/track-file-downloads/listing-1-network-xs.png" alt="Cutout of the Google Chrome debugger network tab showing the cancelled request to send the Google event." data-is-responsive>
+		</noscript>
+		<figcaption class="image">The Google Chrome debugger showing the canceled network request</figcaption>
+	</figure>
+	<p>
+		The <code>onclick</code> handler would have worked if the anchor had had the attribute <code>target="_blank"</code>. The file download would have taken place in the new tab or window and the Google Analytics event would've been sent from the existing tab. I think this is not a very nice solution, I don't want to burden my visitors with an empty tab they didn't ask for. Time to try something else.
+	</p>
+</section>
+
+<section>
+	<h2>The backwards solution</h2>
+	<p>
+		I started looking around what other people did to track file downloads on anchor elements that don't open a new tab or window. If you search on Google for "track file downloads", one of the first results is <a href="http://www.blastam.com/blog/index.php/2013/03/how-to-track-downloads-in-google-analytics-v2/">How To Track File Downloads &amp; Outbound Links in Google Analytics</a> by <a href="http://www.blastam.com/blog/index.php/author/ryan/">Ryan Chase</a>. It has a pretty solid solution for a lot of different situations, I figured this would be a good place to get started.
+	</p>
+	<p>
+		One of the things I didn't like about it was the usage of jQuery. I don't use jQuery on my site and I wasn't about to use it just so I could track an event in Google Analytics. The other problem was I couldn't get it to work properly. I boiled Ryan's solution down to the following:
+	</p>
+	<figure>
+		<div class="break-out js">
+			<pre class="highlight"><code class="hljs javascript">
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-comment">// Get all anchor elements that link to a zip file, these are the links I want to track</span>
+    <span class="hljs-keyword">var</span> links = document.querySelectorAll(<span class="hljs-string">'[href$=".zip"]'</span>);
+    <span class="hljs-comment">// Loop over all the elements we've found</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> index=<span class="hljs-number">0</span>,ubound=links.length; index&lt;ubound; index++) {
+        <span class="hljs-comment">// Attach an event handler on the click event</span>
+        links[index].addEventListener(<span class="hljs-string">'click'</span>, handleClickEvent.bind(<span class="hljs-keyword">this</span>));
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleClickEvent</span><span class="hljs-params">(event)</span> {</span>
+        <span class="hljs-comment">// Send the event to Google Analytics</span>
+        ga.send(<span class="hljs-string">'send'</span>, <span class="hljs-string">'event'</span>, <span class="hljs-string">'link'</span>, <span class="hljs-string">'download'</span>, <span class="hljs-string">'label'</span>, <span class="hljs-number">0</span>);
+        <span class="hljs-comment">// Set a timeout of 400ms, after the time out has lapsed we will start the download of</span>
+        <span class="hljs-comment">// the file</span>
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            location.href = event.target.href;
+        }, <span class="hljs-number">400</span>);
+        <span class="hljs-comment">// Prevent the default behaviour of the link, we prioritize sending the event to</span>
+        <span class="hljs-comment">// Google.</span>
+        event.preventDefault();
+    }
+})();
+            </code></pre>
+		</div>
+		<figcaption class="listing">Stripped down version of Ryan's code</figcaption>
+	</figure>
+	<p>
+		The magic happens in the <code>setTimout</code> part of the code. By waiting 400ms before sending the event we give the system enough time to send out the Google Analytics event before we make the request to download the zip file. I am not really sure where the 400ms comes from, I haven't been able to find any articles that explain why this value should be used. Perhaps a short time out will work just as well.
+	</p>
+	<p>
+		Because I only want to track an event for my download links I could get away by just attaching click handlers to the links whose <code>href</code> ends on ".zip". The other big change I had to make was to replace the <code>return false</code> at the end of the event handler with <code>event.preventDefault()</code>. When returning the value <code>false</code> the zip file downloaded twice, it didn't cancel out the default behavior of the anchor element.
+	</p>
+	<p>
+		There are plenty more examples you can find on-line. All the articles I came across pretty much did the same thing. Attach an event handler to the link, send out the event, set a time out to download the file and cancel the default behavior of the anchor element. When you think about it for a while it is kind of crazy, you're preventing the default behavior of the anchor only to recreate it a little later.
+	</p>
+</section>
+
+<section>
+	<h2>Fixing it the right way round</h2>
+	<p>
+		I think downloading the file should be the default action of the anchor element, sending out the event is of secondary concern. By prioritizing the file download the code for sending out the event became a little simpler.
+	</p>
+	<figure>
+		<div class="break-out js">
+			<pre class="highlight"><code class="hljs javascript">
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-comment">// Get all anchor elements that link to a zip file, these are the links I want to track</span>
+    <span class="hljs-keyword">var</span> links = document.querySelectorAll(<span class="hljs-string">'[href$=".zip"]'</span>);
+    <span class="hljs-comment">// Loop over all the elements we've found</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> index=<span class="hljs-number">0</span>,ubound=links.length; index&lt;ubound; index++) {
+        <span class="hljs-comment">// Attach an event handler on the click event</span>
+        links[index].addEventListener(<span class="hljs-string">'click'</span>, handleClickEvent.bind(<span class="hljs-keyword">this</span>));
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleClickEvent</span><span class="hljs-params">(event)</span> {</span>
+        <span class="hljs-comment">// Set a timeout of 400ms, after the time out has lapsed we will send the event</span>
+        <span class="hljs-comment">// to Google</span>
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            <span class="hljs-comment">// Send the event to Google Analytics</span>
+            ga.send(<span class="hljs-string">'send'</span>, <span class="hljs-string">'event'</span>, <span class="hljs-string">'link'</span>, <span class="hljs-string">'download'</span>, <span class="hljs-string">'label'</span>, <span class="hljs-number">0</span>);
+        }, <span class="hljs-number">400</span>);
+    }
+})();
+            </code></pre>
+		</div>
+		<figcaption class="listing">Download first, Google Analytics event second</figcaption>
+	</figure>
+	<p>
+		This way we don't have to prevent the default behavior of the anchor element and just wait 400ms before sending out the event to Google.
+	</p>
+	<figure>
+		<div data-lazy-load data-is-responsive="['m','s','xs']" alt="Cutout of the Google Chrome debugger network tab showing the succesfull request to send the Google event." data-src="/static/img/post/track-file-downloads/listing-2-network-{breakpoint}.png"></div>
+		<noscript>
+			<img src="/static/img/post/track-file-downloads/listing-2-network-xs.png" alt="Cutout of the Google Chrome debugger network tab showing the succesfull request to send the Google event." data-is-responsive>
+		</noscript>
+		<figcaption class="image">Now we can see the completed Google Analytics event request</figcaption>
+	</figure>
+
+	<section>
+		<h3>Make it configurable</h3>
+		<p>
+			The code above still has one major shortcoming, it sends out the same data for all anchor elements we've attached an event handler to. To make it usable we need to be able to specify which data should be send with the event. In order to do this we're going to add a custom attribute to the anchor elements that should trigger a Google Analytics event.
+		</p>
+		<figure>
+			<div class="break-out html">
+				<pre class="highlight"><code class="hljs xml">
+<span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">data-ga</span>=<span class="hljs-value">"{'action':'download','category':'radial-menu','label':'LESS version','value':'1'}"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/static/articles/radial-menu/radial-menu-less.zip"</span>&gt;</span>LESS version of the mixin<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                </code></pre>
+			</div>
+			<figcaption class="listing">The custom data attribute</figcaption>
+		</figure>
+		<p>
+			We will parse the value of the <code>data-ga</code> attribute as JSON. The value as it is above is not valid JSON, for that the property names and values should be wrapped with double quotes instead of single quotes. Instead of using single quotes for the HTML attribute or escaping the double quotes in the string. I prefer to replace the single quotes with double quotes in JavaScript, this way the HTML has a uniform way of using quotes which I think is a plus.
+		</p>
+		<p>
+			Once the string is parsed as JSON we will have an object with the properties <code>action</code>, <code>category</code>, <code>label</code> and <code>value</code>. We can use these properties in our JavaScript to replace the values we send with the event. What we need to do now is change the JavaScript to use the <code>data-ga</code> property.
+		</p>
+		<figure>
+			<div class="break-out js">
+				<pre class="highlight"><code class="hljs javascript">
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-comment">// Get all anchor elements that have information for a Google Analytics event in the data-ga atttibute</span>
+    <span class="hljs-keyword">var</span> links = document.querySelectorAll(<span class="hljs-string">'[data-ga]'</span>);
+    <span class="hljs-comment">// Loop over all the elements we've found</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> index=<span class="hljs-number">0</span>,ubound=links.length; index&lt;ubound; index++) {
+        <span class="hljs-comment">// Attach an event handler on the click event</span>
+        links[index].addEventListener(<span class="hljs-string">'click'</span>, handleClickEvent.bind(<span class="hljs-keyword">this</span>));
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleClickEvent</span><span class="hljs-params">(event)</span> {</span>
+        <span class="hljs-comment">// Get the content from the data-ga attribute from the element that send the click event</span>
+        <span class="hljs-keyword">var</span> data = event.currentTarget.getAttribute(<span class="hljs-string">'data-ga'</span>);
+        <span class="hljs-comment">// We'll be parsing the content of the attribute as JSON, in order to be able</span>
+        <span class="hljs-comment">// to do this we need to make sure all single quotes in the string are double quotes.</span>
+        <span class="hljs-comment">// This regular expression replaces all instances of a single quote</span>
+        data = data.replace(<span class="hljs-regexp">/\'/g</span>, <span class="hljs-string">'"'</span>);
+        <span class="hljs-comment">// Now we can parse the string to an object. If you're not sure this attribute will</span>
+        <span class="hljs-comment">// always contain a string which can be parsed as JSON you should add a try...catch</span>
+        <span class="hljs-comment">// around this so your code won't crash</span>
+        <span class="hljs-keyword">try</span> {
+            data = <span class="hljs-built_in">JSON</span>.parse(data);
+            <span class="hljs-comment">// Set a timeout of 400ms, after the time out has lapsed we will send the event</span>
+            <span class="hljs-comment">// to Google</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                <span class="hljs-comment">// Send the event to Google Analytics. We use the properties from the object we've parsed</span>
+                <span class="hljs-comment">// from the attribute. Be sure to pass the value parameter as a number</span>
+                ga.send(<span class="hljs-string">'send'</span>, <span class="hljs-string">'event'</span>, data.category, data.action, data.label, <span class="hljs-built_in">parseInt</span>(data.value, <span class="hljs-number">10</span>));
+            }, <span class="hljs-number">400</span>);
+        } <span class="hljs-keyword">catch</span> (exception) {
+            console.log(<span class="hljs-string">'Unable to parse the string &lt;'</span> + data + <span class="hljs-string">'&gt; as JSON'</span>);
+        }
+    }
+})();
+                </code></pre>
+			</div>
+			<figcaption class="listing">Using the data-ga attribute</figcaption>
+		</figure>
+		<p>
+			Now when a visitor clicks on the link to download a file the following information will show up in Google Analytics.
+		</p>
+		<figure>
+			<div data-lazy-load data-is-responsive="['m','s','xs']" data-alt="An cut out of the Google Analytics reporting view showing an event has been received for the download of the LESS version of the radial menu mixin" data-src="/static/img/post/track-file-downloads/google-analytics-{breakpoint}.png"></div>
+			<noscript>
+				<img src="/static/img/post/track-file-downloads/google-analytics-xs.png" alt="An cut out of the Google Analytics reporting view showing an event has been received for the download of the LESS version of the radial menu mixin">
+			</noscript>
+			<figcaption class="image">The event shows up in Google Analytics</figcaption>
+		</figure>
+	</section>
+</section>
+
+<section>
+	<h2>The result</h2>
+	<p>
+		We now have a small, light weight, piece of JavaScript which we can use to send events to Google Analytics. It can be configured per anchor element and it prioritizes the file download over sending the event to Google.
+	</p>
+	<p>
+		The JavaScript code is compatible with Internet Explorer 9 and up due to the usage of <code>addEventListener</code>. The code could easily be made compatible with Internet Explorer 8 by loading something like the <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener#Compatibility">addEventListener polyfill</a> on the Mozilla Developer Network.
+	</p>
+	<ul class="download-list">
+		<li><a href="/static/articles/track-file-downloads/download-event.zip" data-ga="{'category':'track-file-downloads','label':'Track download script', 'value':'1'}" data-size="(.zip, 1KB)">Track download script</a></li>
+	</ul>
+</section>
+	<aside id="comments-skip" tabindex="-1">
+			<h2 id="disqus_thread">Comments</h2>
+			<p id="comments-js">I use Disqus for the comments on my website. If you want to see the comments or post your own, please visit this page with JavaScript enabled.</p>
+		</aside>
+	</main>
+	<nav class="article-navigation">
+				<h2 class="visually-hidden">Navigate to other articles</h2>
+				<a href="/articles/disqus-on-demand" class="newer" title="Go to the next, newer article">Load Disqus comments on demand</a>
+				<a href="/articles/radial-menu" class="older" title="Go to the previous, older article">Radial Menu mixin</a>
+			</nav>
+	<footer class="site-footer">
+
+	<a href="#scroll-top-target"><span>Back to top</span></a>
+
+	<div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+		<meta itemprop="url" content="https://plus.google.com/105989274339589747997/about">
+		<ul class="social-links">
+			<li>
+				<a href="https://www.linkedin.com/pub/thijs-busser/33/11a/b4b" title="Thijs Busser on Linked In"><span>Linked In</span></a>
+			</li>
+			<li>
+				<a href="http://plus.google.com/105989274339589747997/about" rel="author" title="Thijs Busser on Google Plus"><span>Google Plus</span></a>
+			</li>
+			<li>
+				<a href="http://twitter.com/tbusser" title="Thijs Busser on Twitter"><span>Twitter</span></a>
+			</li>
+			<li>
+				<a href="/feed.xml" title="RSS Feed"><span>RSS</span></a>
+			</li>
+		</ul>
+
+		<p>©2014 by <a href="/about-me"><span itemprop="name">Thijs Busser</span></a>. All original content on this website is published under <a href="http://creativecommons.org/licenses/by/4.0/">license</a>.</p>
+	</div>
+</footer>
+	<script src="/static/js/site/built.js"></script><script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-49038202-1', 'tbusser.net');
+			ga('send', 'pageview');
+		</script>
+
+<script>
+	require.config({
+		baseUrl: '/static/js/site'
+	});
+
+	(function() {
+		'use strict';
+
+		var tests = [
+				{test: '[data-is-responsive], [data-lazy-load]', module: 'images'},
+				{test: '[href="#scroll-top-target"]', module: 'scroll-to-top'}
+			],
+			modules = [];
+
+		for (var index=0,ubound=tests.length; index<ubound; index++) {
+			if (document.querySelectorAll(tests[index].test).length > 0) {
+				modules.push(tests[index].module);
+			}
+		}
+
+		if (modules.length > 0) {
+			require(modules, function(modules) {
+				// Loop through the arguments object, it will hold the modules we wanted to load
+				for (var index=0,ubound=arguments.length; index<ubound; index++) {
+					// Create an instance of the module, to do this we need to make sure it is a function
+					if (typeof arguments[index] === 'function') {
+						var module = new arguments[index];
+					}
+				}
+			});
+		}
+	})();
+</script>
+
+</body>
+</html>

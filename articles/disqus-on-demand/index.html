@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="How to load Disqus comments on demand to keep the overall page weight as low as possible.">
+	
+	<!-- Open Graph metatags-->
+	<meta property="article:author" content="https://www.facebook.com/thijsbusser">
+	<meta property="article:section" content="development">
+		
+	<meta property="article:tag" content="Disqus">
+			<meta property="article:tag" content="JavaScript">
+			
+	<meta property="og:description" content="How to load Disqus comments on demand to keep the overall page weight as low as possible.">
+	
+	<meta property="og:site_name" content="Something Awesome | Thijs Busser's Blog">
+	<meta property="og:title" content="Load Disqus comments on demand | Something Awesome">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="http://tbusser.net/articles/disqus-on-demand/index.html">
+
+	<!-- Twitter card -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:creator" content="@tbusser">
+	<title>Load Disqus comments on demand | Something Awesome</title>
+	<!-- The HTML5Shiv inlined as recommended by Paul Irish in this post: https://github.com/Modernizr/Modernizr/issues/878#issuecomment-41448059 -->
+	<script>
+		!function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=t.elements;return"string"==typeof a?a.split(" "):a}function n(a,b){var c=t.elements;"string"!=typeof c&&(c=c.join(" ")),"string"!=typeof a&&(a=a.join(" ")),t.elements=c+" "+a,s(b)}function o(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function p(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=o(c));var g;return g=d.cache[a]?d.cache[a].cloneNode():f.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!g.canHaveChildren||e.test(a)||g.tagUrn?g:d.frag.appendChild(g)}function q(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||o(a);for(var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;g>e;e++)d.createElement(f[e]);return d}function r(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return t.shivMethods?p(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-:]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(t,b.frag)}function s(a){a||(a=b);var c=o(a);return!t.shivCSS||g||c.hasCSS||(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||r(a,c),a}var g,k,c="3.7.2",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,h="_html5shiv",i=0,j={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){g=!0,k=!0}}();var t={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:s,createElement:p,createDocumentFragment:q,addElements:n};a.html5=t,s(b)}(this,document);
+	</script>
+
+	<link rel="stylesheet" href="http://tbusser.net/static/css/site.css">
+	
+	
+	<!--[if lte IE 9]>
+	<script src="http://tbusser.net/static/js/shims/classList.js"></script>
+	<![endif]-->
+</head>
+
+<body id="scroll-top-target" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+		<ul class="skip-links">
+		<li><a href="#navigation-skip">Skip to navigation</a></li>
+		<li><a href="#content-skip">Skip to content</a></li>
+		<li><a href="#comments-skip">Skip to comments</a></li>
+	</ul>
+	<!--[if lte IE 9]>
+	<div class="high-attention-warning">
+		The browser you are using might not give you the best experience on this website. <a href="http://browsehappy.com/">Please upgrade</a> to a more recent web browser for a better experience.
+	</div>
+<![endif]-->
+		<header class="site-header" role="banner">
+		<a href="/">
+		<figure>
+			<img src="" alt="Headshot of Thijs Busser" class="headshot" data-is-responsive data-has-retina data-src="/static/img/headshot{modifier}-{breakpoint}.jpg">
+			<noscript>
+				<img src="/static/img/headshot2x-xl.jpg" alt="Headshot of Thijs Busser" class="headshot">
+			</noscript>
+		</figure>
+		<div class="alpha">
+				Something Awesome
+			</div>
+		</a>
+		<div>by Thijs Busser, front-end developer</div>
+	</header>
+	<main role="main" id="content-skip" tabindex="-1">
+		<h1 itemprop="name">Load Disqus comments on demand</h1>
+		<aside class="profile meta-data">
+			<h2>Article meta data</h2><dl>
+	<dt>Published on:</dt>
+	
+	<dd><time itemprop="datePublished" datetime="2014-05-23T11:10+01:00">May 23rd, 2014</time></dd>
+
+	<dt>Comments:</dt><dd><a href="http://tbusser.net/articles/disqus-on-demand/#disqus_thread"></a></dd>
+
+<dt>Tags:</dt><dd>
+			<a href="/tags/disqus/" rel="tag" title="See all articles tagged with Disqus">Disqus</a>
+		</dd><dd>
+			<a href="/tags/javascript/" rel="tag" title="See all articles tagged with JavaScript">JavaScript</a>
+		</dd>
+</dl><meta itemprop="keywords" content="Disqus JavaScript">
+
+		</aside>
+	<section class="introduction">
+	<h2 id="section1">Introduction</h2>
+	<p itemprop="description">
+		When it came to adding comments to my blog I quickly decided on using Disqus to get the job done. It was easy to implement and I had seen it in use on many different website already. While I was quite happy with the result I wasn't too happy with the increase in page weight. On every visit to a page with comments enabled the Disqus code will pull in a lot of data. Because I am trying to build something light weight and friendly to people who have a slow connection or a fixed data allotment this didn't sit well with me. Let's see how we can make it into something that has a better user experience	.
+	</p>
+</section>
+
+<section>
+	<h2 id="section2">The default way of loading comments</h2>
+	<p>
+		When you setup an account on Disqus they provide you with a piece of HTML / JavaScript which you can add to your website. It will load the comments and display them in an element with the id <code>disqus_thread</code>. It is pretty straightforward and easy to include.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs xml">
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"disqus_thread"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="hljs-comment">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */</span>
+    <span class="hljs-keyword">var</span> disqus_shortname = <span class="hljs-string">'example'</span>; <span class="hljs-comment">// required: replace example with your forum shortname</span>
+
+    <span class="hljs-comment">/* * * DON'T EDIT BELOW THIS LINE * * */</span>
+    (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> dsq = document.createElement(<span class="hljs-string">'script'</span>);
+        dsq.type = <span class="hljs-string">'text/javascript'</span>;
+        dsq.async = <span class="hljs-literal">true</span>;
+        dsq.src = <span class="hljs-string">'//'</span> + disqus_shortname + <span class="hljs-string">'.disqus.com/embed.js'</span>;
+        (document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>] || document.getElementsByTagName(<span class="hljs-string">'body'</span>)[<span class="hljs-number">0</span>]).appendChild(dsq);
+    })();
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">noscript</span>&gt;</span>
+    Please enable JavaScript to view the <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"http://disqus.com/?ref_noscript"</span>&gt;</span>comments powered by Disqus.<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">noscript</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"http://disqus.com"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"dsq-brlink"</span>&gt;</span>comments powered by <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"logo-disqus"</span>&gt;</span>Disqus<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            </code></pre>
+			<figcaption class="listing">Boilerplate Disqus code</figcaption>
+		</div>
+	</figure>
+	<p>The boilerplate code above will load the comments as soon as the visitor opens the page, no questions asked.</p>
+</section>
+
+<section>
+	<h2>What will we be changing?</h2>
+	<p>
+		First of all we will be adding a button which will enable the visitor to load the comments, this will replace the default behavior where the comments are loaded on page load. Because the comments may never be shown the <code>div</code> element with the id <code>disqus_thread</code> is something we don't need include in the page by default, we can move its creation to JavaScript and create it just before we need it.
+	</p>
+	<p>
+		We can get rid of the bottom <code>anchor</code> element promoting Disqus, it doesn't serve any purpose other than to promote them and their name will be shown often enough. The <code>noscript</code> element looks like a good idea. How friendly of us to give visitors in a browser that can't run JavaScript or have JavaScript disabled a warning of the JavaScript dependency, but it misses the mark. It doesn't take into account users who for some reason or another never get the JavaScript files even though the browser is capable of running it.
+	</p>
+	<aside>
+		<h3>Why not <code>noscript</code>?</h3>
+		<p>
+			As pointed out in <a href="http://www.w3.org/TR/html5/scripting-1.html#the-noscript-element">the W3C spec for the <code>noscript</code> element</a>, it is a blunt instrument. They recommend to design the script to change the page from being a scriptless page to a scripted page. Basically they recommend to apply <a href="http://alistapart.com/article/understandingprogressiveenhancement">progressive enhancement</a>.
+		</p>
+	</aside>
+	<p>
+		According to <a href="https://gds.blog.gov.uk/2013/10/21/how-many-people-are-missing-out-on-javascript-enhancement/">this article on gov.uk</a> most users who don't run the JavaScript actually do have a JavaScript capable browser and do have JavaScript enabled. This group of visitors will not get to see the content of the <code>noscript</code> element and will just see an empty space. This will need to be addressed by moving the message out of the <code>noscript</code> element and into something that is visible to all users.
+	</p>
+	<p>
+		Last but not least I would like to show the current comment count in the button which we're going to add. Disqus has two different methods to get the comment count but we'll see that neither really suits our needs.
+	</p>
+</section>
+
+<section>
+	<h2>A clean start</h2>
+	<p>
+		Let's first create a nice clean baseline from which we can expand our solution. Let's remove the stuff we don't want on page load and make sure the message about the JavaScript dependency is visible to all visitors, not just the ones with a browser that can't run JavaScript or have it disabled.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs xml">
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"disqus_thread"</span>&gt;</span>
+    The comments on this website require the use of JavaScript. Perhaps your browser isn't
+    JavaScript capable or the script is not being run for another reason. If you're
+    interested in reading the comments or leaving a comment behind please try again with a
+    different browser or from a different connection.
+<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+            </code></pre>
+			<figcaption class="listing">The cleaned up HTML</figcaption>
+		</div>
+	</figure>
+	<p>
+		The text about the JavaScript dependency is now visible to all visitors, also the ones who don't get to run JavaScript even though their browser is capable and willing. We will hide this message later on in our JavaScript module. The <code>p</code> element has the same id as the original <code>div</code> element had, this is done on purpose.
+	</p>
+	<p>
+		First of all we will need to be able to find this element in JavaScript so we can remove it, this way it is real easy to find the element. The other reason has to do with showing the comment count.
+	</p>
+	<p>
+		Disqus has a away to show the comment count using an <code>anchor</code> element where the <code>href</code> attribute ends on <code>#disqus_thread</code>. If we would totally remove this id from the page we have links that now have an invalid target and appear broken when the visitor clicks on them. By assigning the id to the <code>p</code> element the browser still has a target to navigate to.
+	</p>
+	<p>
+		You probably also noticed the lack of the <code>script</code> element. This is because we will be moving the script into a separate file which will make it a lot easier to reuse the script in different projects.
+	</p>
+</section>
+
+<section>
+	<h2>Loading comments on demand</h2>
+	<p>
+		With the HTML all cleaned up it is time to turn to the JavaScript. We don't want the comments to be loaded on page loaded but only after the user indicated the comments should be shown. This will require us to create a <code>button</code> element in JavaScript for the visitor to click on and have the original Disqus code executed in the click handler of the <code>button</code>.
+	</p>
+	<aside>
+		<h3>Why a button?</h3>
+		<p>
+			Quite often you see people use an <code>anchor</code> element that has no <code>href</code> attribute or an href with <code>#</code> as a value. That is just wrong. Check out this <a href="http://www.karlgroves.com/2013/05/14/links-are-not-buttons-neither-are-divs-and-spans/">article by Karl Groves on links and buttons</a>, he explains well when to use which.
+		</p>
+	</aside>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-comment">// required: replace example with your forum shortname</span>
+    <span class="hljs-keyword">var</span> disqus_shortname = <span class="hljs-string">'example'</span>;
+
+    <span class="hljs-comment">/**
+     * This method will handle the click on the button to load the comments. It will remove the
+     * button and execute the original Disqus script for loading the comments.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">button_clickHandler</span><span class="hljs-params">(event)</span> {</span>
+        <span class="hljs-comment">// We need to get the button element, we could also use the target property of the event</span>
+        <span class="hljs-comment">// but this will do just as well</span>
+        <span class="hljs-keyword">var</span> button = document.getElementById(<span class="hljs-string">'disqus_thread'</span>);
+        <span class="hljs-comment">// Now we will have to recreate the div element we removed from the HTML. We will place</span>
+        <span class="hljs-comment">// it into the DOM like we did when we created the button</span>
+        <span class="hljs-keyword">var</span> disqusContainer = document.createElement(<span class="hljs-string">'div'</span>);
+        button.parentNode.insertBefore(disqusContainer, button);
+        button.parentNode.removeChild(button);
+
+        <span class="hljs-comment">// The div element will need to have the disqus_thread id as this is required for Disqus,</span>
+        <span class="hljs-comment">// it is the way their code identifies the element in which the comments can be displayed</span>
+        disqusContainer.id = <span class="hljs-string">'disqus_thread'</span>;
+
+        <span class="hljs-comment">// Now we can execute the original Disqus code</span>
+        <span class="hljs-keyword">var</span> dsq = document.createElement(<span class="hljs-string">'script'</span>);
+        dsq.type = <span class="hljs-string">'text/javascript'</span>;
+        dsq.async = <span class="hljs-literal">true</span>;
+        dsq.src = <span class="hljs-string">'//'</span> + disqus_shortname + <span class="hljs-string">'.disqus.com/embed.js'</span>;
+        (document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>] || document.getElementsByTagName(<span class="hljs-string">'body'</span>)[<span class="hljs-number">0</span>]).appendChild(dsq);
+    }
+
+    <span class="hljs-comment">/**
+     * This method will initialize the module. It will replace the JavaScript dependency message
+     * with a button which will allow the visitor to load the comments.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">// Try to get the element we used to display the message about the JavaScript dependency</span>
+        <span class="hljs-keyword">var</span> placeholder = document.getElementById(<span class="hljs-string">'disqus_thread'</span>);
+        <span class="hljs-comment">// If we didn't get the placeholder element we will stop setting up the button to load</span>
+        <span class="hljs-comment">// the comments</span>
+        <span class="hljs-keyword">if</span> (placeholder == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-comment">// The placeholder was found, now we can create the button which will allow the visitor to</span>
+        <span class="hljs-comment">// load the comments</span>
+        <span class="hljs-keyword">var</span> button = document.createElement(<span class="hljs-string">'button'</span>);
+        button.appendChild(document.createTextNode(<span class="hljs-string">'Click here to load the comments.'</span>));
+        button.addEventListener(<span class="hljs-string">'click'</span>, button_clickHandler.bind(<span class="hljs-keyword">this</span>));
+
+        <span class="hljs-comment">// We will insert the button before the placeholder and once the button has been placed in</span>
+        <span class="hljs-comment">// the DOM we will remove the placeholder</span>
+        placeholder.parentNode.insertBefore(button, placeholder);
+        placeholder.parentNode.removeChild(placeholder);
+
+        <span class="hljs-comment">// The placeholder used to have the id which can be reference by an anchor element, to make</span>
+        <span class="hljs-comment">// sure we don't break this functionality we will apply the id to our newly created button</span>
+        button.id = <span class="hljs-string">'disqus_thread'</span>;
+    }
+
+    <span class="hljs-comment">// Setup the module</span>
+    init();
+})();
+            </code></pre>
+			<figcaption class="listing">Loading the comments on demand</figcaption>
+		</div>
+	</figure>
+	<p>
+		We've now accomplished two of the goals we've set out at the start. The comments are no longer loaded on page load, instead the user has to click a button before we request the comments from Disqus. It significantly lowers the initial page weight and is a lot more friendly for visitors on a slow connection or a fixed data allotment.
+	</p>
+	<p>
+		We also have a system in place that informs all visitors of the JavaScript dependency and we remove this message automatically once our JavaScript module is loaded and run.
+	</p>
+</section>
+
+
+<section>
+	<h2>Showing the comment count in the button</h2>
+	<p>
+		The third goal that we still need to accomplish is to show the current comment count in the button. As you may have noticed at the top of this article there is an anchor to the comment section and it shows the current comment count. Chances are you missed it at the top of the article or perhaps you forgot how many comments there are by the time you've read the article and reach the comment section.
+	</p>
+	<p>
+		I expect people will get discouraged to click the button to load the comments if too often it turns out there were no comments to load. To make sure that doesn't happen it is best to shape the expectations and show the current comment count at the moment the visitor makes the decision whether or not to click on the button.
+	</p>
+	<p>
+		Disqus provides two ways, that I know of, to show the current comment count for a discussion:
+	</p>
+	<ol>
+		<li>
+			<p>
+				Use an <code>anchor</code> element and make sure the <code>href</code> attribute ends with the string <code>#disqus_thread</code>. Disqus provides a piece of <a href="http://help.disqus.com/customer/portal/articles/565624-tightening-your-disqus-integration">JavaScript which will set the text</a> for these anchor elements to the current comment count. This is what I use to show the comment count at the start of my articles and on the index page.
+			</p>
+		</li>
+		<li>
+			<p>
+				There is an <a href="http://help.disqus.com/customer/portal/articles/1131783-tutorial-get-comment-counts-with-the-api">API you can use to retrieve the comment count</a> for a page. This API is rate limited to a 1000 calls per hour. Disqus advices to cache this value server side and not use this API call client side as you may hit the rate limit.
+			</p>
+		</li>
+	</ol>
+	<p>
+		Since we're using a button to trigger the comment loading there is no way we can use method 1. This leaves us with method 2 but unfortunately that isn't a viable option for this blog. This blog is just a static website, there is no back-end which can retrieve the comment count and cache it server side. While I don't expect I will exceed the Disqus rate limit any time soon it is better to be safe than sorry. Time to come up with a different solution.
+	</p>
+	<p>
+		Like I said, option 1 is used for the anchor which links to the comment section. This isn't rate limited and is already performed when the visitor visits a page. The JavaScript provided by Disqus pulls in some other JavaScript which in turns sets the text, there is no event to listen to. That leaves us with one option, we'll poll the text of the <code>anchor</code> element. The one requirement here is the <code>anchor</code> needs to be empty on page load. To poll the element we need to alter our JavaScript module.
+	</p>
+	<figure>
+		<div class="break-out">
+			<pre class="highlight"><code class="hljs javascript">
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-keyword">var</span> disqus_shortname = <span class="hljs-string">'example'</span>, <span class="hljs-comment">// required: replace example with your forum shortname</span>
+        interval = <span class="hljs-number">208</span>,
+        link = <span class="hljs-literal">null</span>,
+        maxTries = <span class="hljs-number">8</span>,
+        pollTries = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     * Add the text from the anchor in the button to show the current comment count.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addCommentTextToButton</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">// Get the text from the anchor, make sure it is all lower case</span>
+        <span class="hljs-keyword">var</span> text = link.innerHTML.toLowerCase();
+        <span class="hljs-comment">// If there is a single comment we need to use 'is' in the sentence instead of 'are'</span>
+        <span class="hljs-keyword">var</span> verb = (<span class="hljs-built_in">parseInt</span>(text, <span class="hljs-number">10</span>) === <span class="hljs-number">1</span>) ? <span class="hljs-string">'is '</span> : <span class="hljs-string">'are '</span>;
+        <span class="hljs-comment">// Add the text to the button to show how many comments there are, use the verb we determined</span>
+        <span class="hljs-comment">// and the comment count we got from the anchor</span>
+        <span class="hljs-keyword">var</span> button = document.getElementById(<span class="hljs-string">'disqus_thread'</span>);
+        button.appendChild(document.createTextNode(<span class="hljs-string">' Right now there '</span> + verb + link.innerHTML.toLowerCase() + <span class="hljs-string">'.'</span>));
+    }
+
+    <span class="hljs-comment">/**
+     * This method will handle the click on the button to load the comments. It will remove the
+     * button and execute the original Disqus script for loading the comments.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">button_clickHandler</span><span class="hljs-params">(event)</span> {</span>
+        ...
+    }
+
+    <span class="hljs-comment">/**
+     * This method will initialize the module. It will replace the JavaScript dependency message
+     * with a button which will allow the visitor to load the comments.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> {</span>
+        ...
+        <span class="hljs-comment">// Try to get an anchor element with a href to #disqus_thread, this is where</span>
+        <span class="hljs-comment">// the text with the comment count will be placed in</span>
+        link = document.querySelector(<span class="hljs-string">'[href$="#disqus_thread"]'</span>);
+        <span class="hljs-comment">// Check if we've found an element with the requested href</span>
+        <span class="hljs-keyword">if</span> (link != <span class="hljs-literal">null</span>) {
+            <span class="hljs-comment">// Start polling the text inside the anchor element</span>
+            pollCommentText();
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * This method will poll the text inside the anchor element until it contains text. It
+     * will do so for maximal 8 times before giving up. The time between each attempt will
+     * be 20% longer than the last. With an initial interval of 208ms the math works out
+     * to:
+     *  1: 250ms
+     *  2: 300ms
+     *  3: 360ms
+     *  4: 432ms
+     *  5: 518ms
+     *  6: 622ms
+     *  7: 746ms
+     *  8: 895ms
+     * The method will stop checking for the comment count after 4.1 seconds.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pollCommentText</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">// Check if the anchor element still is empty</span>
+        <span class="hljs-keyword">if</span> (link.innerHTML === <span class="hljs-string">''</span>) {
+            <span class="hljs-comment">// Increase the poll counter</span>
+            pollTries++;
+            <span class="hljs-comment">// Check if we haven't exceeded the max number of tries</span>
+            <span class="hljs-keyword">if</span> (pollTries &lt;= maxTries) {
+                <span class="hljs-comment">// Wait an additional 20% longer between each attempt</span>
+                interval *= <span class="hljs-number">1.2</span>;
+                <span class="hljs-comment">// We still have a try left, check if the anchor has text in a while</span>
+                setTimeout(pollCommentText, interval);
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// The anchor contains text, add it to the button</span>
+            addCommentTextToButton();
+        }
+    }
+
+    <span class="hljs-comment">// Setup the module</span>
+    init();
+})();
+            </code></pre>
+			<figcaption class="listing">Polling the anchor for the comment count</figcaption>
+		</div>
+	</figure>
+	<p>
+		In the <code>init</code> method we check if there is an <code>anchor</code> in the page which satisfies the requirement set forth by Disqus. If there is we start to check if the <code>anchor</code> element has a text yet. To make sure we don't keep doing this for too long and unnecessarily there is a system in place which limits it to (a completely arbitrary number of) 8 attempts. Because in the beginning it is nice if the text is detected quickly the interval is short. The more tries we need, the longer the interval gets. Perhaps it is a micro optimization but it felt right doing it this way.
+	</p>
+	<p>
+		If after the maximum number of tries we still didn't find any text in the <code>anchor</code> element it is too bad but we will let it be. It is not a necessity to have the comment count in the button and if after 4 seconds there is no result it could very well be there is something else going on. In my tests I noticed there were usually about 2 to 3 attempts before the comment count had been returned by Disqus.
+	</p>
+	<p>
+		The <code>addCommentTextToButton</code> takes the inner HTML of the <code>anchor</code> element. My Disqus configuration has the default config where it returns the text as <code>{number} Comment(s)</code>. The call to <code>parseInt</code> is given the entire string, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt#Description">the method will only parse up to the first non digit</a> it finds in the string and returns it as a number. It is an easy way to extract the number from the string, no need to use a regex. Once we have the number we can determine if we need to use 'is' or 'are' and construct the sentence we want to add to the button text.
+	</p>
+</section>
+
+<section>
+	<h2>What did it get us?</h2>
+	<p>
+		Now we have achieved all three goals we set out in the beginning. We have a nice, reusable, JavaScript module which puts the visitor in control of loading the comments and a way to provide the visitor with some important information at the moment of deciding whether or not to click on the button. You might disagree with me on it being a good thing that the user decides if the comments should be loaded or not. What you can't argue with are numbers and I have some to show you how much we saved in initial page weight.
+	</p>
+	<section>
+		<h3>By the numbers</h3>
+		<p>
+			To measure the impact of the comments on the initial page weight I first identified four different scenarios to test. The first two are with the old way of loading the comments on page load, once while signed in to Disqus and once as an anonymous visitor. The other two scenarios are with the comments not being loaded on page load and again once signed in and once signed out of Disqus. As a test case I took my <a href="/articles/track-file-downloads">Track file downloads with Google's Universal Analytics</a> article as the page to test the differences.
+		</p>
+		<p>
+			To get the numbers you will see below I did the following for each of the 4 scenarios:
+		</p>
+		<ul>
+			<li>
+				<p>
+					I loaded the page in private browsing mode with all my Chrome extensions disabled to make sure I would only be getting network traffic from my site
+				</p>
+			</li>
+			<li>
+				<p>
+					I disabled caching in the Developer Tools, each reload of the page was like visiting it for the first time.
+				</p>
+			</li>
+			<li>
+				<p>To see the number of requests and the amount of data downloaded I saved the content from the Network tab as a HAR file and used this to count the request and the total compressed and uncompressed size of the data.</p>
+			</li>
+			<li>
+				<p>For each scenario I loaded the page 10 times to average out the load times.</p>
+			</li>
+		</ul>
+		<figure>
+			<div class="table-container">
+				<table border="1">
+					<thead>
+						<tr>
+							<th>Auto load</th>
+							<th>Signed in</th>
+							<th>Requests</th>
+							<th>Size (KB)</th>
+							<th>Avg time DOMContentLoaded event (ms)</th>
+							<th>Avg time load event(ms)</th>
+							<th>Avg time (ms)</th>
+							<th>Heap snapshot (MB)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="highlighted">
+							<td rowspan="2">No</td>
+							<td>No</td>
+							<td>13</td>
+							<td>135</td>
+							<td>375</td>
+							<td>665</td>
+							<td>687</td>
+							<td>2.9</td>
+						</tr>
+						<tr>
+							<td>Yes</td>
+							<td>13</td>
+							<td>135</td>
+							<td>307</td>
+							<td>563</td>
+							<td>562</td>
+							<td>2.9</td>
+						</tr>
+						<tr>
+							<td colspan="7" class="spacer-row"></td>
+						</tr>
+						<tr class="highlighted">
+							<td rowspan="2">Yes</td>
+							<td>No</td>
+							<td>35</td>
+							<td>377</td>
+							<td>371</td>
+							<td>767</td>
+							<td>1969</td>
+							<td>6.6</td>
+						</tr>
+						<tr>
+							<td>Yes</td>
+							<td>36</td>
+							<td>382</td>
+							<td>376</td>
+							<td>791</td>
+							<td>1998</td>
+							<td>6.9</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<figcaption class="tables">Disqus' impact on initial page weight</figcaption>
+		</figure>
+		<p>
+			As you can see we shaved off about 64% of the initial page weight by not loading the comments on page load. That is quite an impressive number. The sizes in the table are for the downloaded data, this is the compressed size. The HAR file also reveals the size of the data without compression. Looking at these numbers to amount we saved is even more. The uncompressed size is 202KB vs 1024KB which works out to 80% less data transfered.
+		</p>
+		<p>
+			The last column is also pretty interesting, it is a heap snapshot of the website as reported by Chrome. We need about 55% less memory to display the website if we don't load the comments automatically. We still need the extra memory space when the visitor does want to see the comments but at least by default we're not taking up more resources than necessary.
+		</p>
+		<p>
+			All these numbers are for an article with 0 comments. The difference will only be bigger when there are comments to show.
+		</p>
+		<p>
+			The data also reveals the following:
+		</p>
+		<ul>
+			<li>
+				<p>
+					The sample size of 10 reloads is not enough to get representative average for the time it takes to load the page. The load times for the scenario where the comments aren't auto loaded while signed in to Disqus are quite a lot lower than in the scenario where the comments aren't auto loaded while not signed in to Disqus. I would expect them to be more similar.
+				</p>
+			</li>
+			<li>
+				<p>
+					The difference between being signed in and not being signed in to Disqus is just a single request. The extra request is for the avatar of the signed in user.
+				</p>
+			</li>
+			<li>
+				<p>
+					The average time it takes for the DOMContentLoaded event to be fired is pretty much the same over the 4 scenarios.
+				</p>
+			</li>
+			<li>
+				<p>
+					The average time it takes for the load event to be fired is only slightly less when not loading the comments on page load, the total time needed to load everything does take a lot longer when loading the comments on page load.
+				</p>
+			</li>
+		</ul>
+	</section>
+</section>
+
+<section>
+	<h2>Wrapping up</h2>
+	<p>
+		I hope you found the article useful. We've seen the effect it has on the initial page weight when Disqus comments are loaded. In addition to that we've also improved the notification to the user that there is a JavaScript dependency for the comments. I think the user experience is greatly improved by these modifications we've made. If you want you can download the full version of the script from the link below.
+	</p>
+	<ul class="download-list">
+		<li>
+			<a href="/static/articles/disqus-on-demand/disqus-on-demand.zip" data-ga="{'category':'disqus-on-demand','label':'Disqus on demand script', 'value':'1'}" data-size="(.zip, 2KB)">Disqus on demand script</a>
+		</li>
+	</ul>
+</section>
+	<aside id="comments-skip" tabindex="-1">
+			<h2 id="disqus_thread">Comments</h2>
+			<p id="comments-js">I use Disqus for the comments on my website. If you want to see the comments or post your own, please visit this page with JavaScript enabled.</p>
+		</aside>
+	</main>
+	<nav class="article-navigation">
+				<h2 class="visually-hidden">Navigate to other articles</h2>
+				<a href="/articles/js-unit-testing-part-01" class="newer" title="Go to the next, newer article">JavaScript unit testing with Mocha and Grunt</a>
+				<a href="/articles/track-file-downloads" class="older" title="Go to the previous, older article">Track file downloads with Google&#x27;s Universal Analytics</a>
+			</nav>
+	<footer class="site-footer">
+
+	<a href="#scroll-top-target"><span>Back to top</span></a>
+
+	<div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+		<meta itemprop="url" content="https://plus.google.com/105989274339589747997/about">
+		<ul class="social-links">
+			<li>
+				<a href="https://www.linkedin.com/pub/thijs-busser/33/11a/b4b" title="Thijs Busser on Linked In"><span>Linked In</span></a>
+			</li>
+			<li>
+				<a href="http://plus.google.com/105989274339589747997/about" rel="author" title="Thijs Busser on Google Plus"><span>Google Plus</span></a>
+			</li>
+			<li>
+				<a href="http://twitter.com/tbusser" title="Thijs Busser on Twitter"><span>Twitter</span></a>
+			</li>
+			<li>
+				<a href="/feed.xml" title="RSS Feed"><span>RSS</span></a>
+			</li>
+		</ul>
+
+		<p>©2014 by <a href="/about-me"><span itemprop="name">Thijs Busser</span></a>. All original content on this website is published under <a href="http://creativecommons.org/licenses/by/4.0/">license</a>.</p>
+	</div>
+</footer>
+	<script src="/static/js/site/built.js"></script><script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-49038202-1', 'tbusser.net');
+			ga('send', 'pageview');
+		</script>
+
+<script>
+	require.config({
+		baseUrl: '/static/js/site'
+	});
+
+	(function() {
+		'use strict';
+
+		var tests = [
+				{test: '[data-is-responsive], [data-lazy-load]', module: 'images'},
+				{test: '[href="#scroll-top-target"]', module: 'scroll-to-top'}
+			],
+			modules = [];
+
+		for (var index=0,ubound=tests.length; index<ubound; index++) {
+			if (document.querySelectorAll(tests[index].test).length > 0) {
+				modules.push(tests[index].module);
+			}
+		}
+
+		if (modules.length > 0) {
+			require(modules, function(modules) {
+				// Loop through the arguments object, it will hold the modules we wanted to load
+				for (var index=0,ubound=arguments.length; index<ubound; index++) {
+					// Create an instance of the module, to do this we need to make sure it is a function
+					if (typeof arguments[index] === 'function') {
+						var module = new arguments[index];
+					}
+				}
+			});
+		}
+	})();
+</script>
+
+</body>
+</html>
