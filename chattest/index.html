@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chatbot test</title>
+    <link rel="stylesheet" href="css/site.css">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,initial-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <header class="chat-header">
+        <h1 class="chat-header__caption">Dokter intake</h1>
+    </header>
+
+    <article class="chat-messages">
+        <ol class="chat-messages__log">
+
+        </ol>
+        <div class="chat-messages__typing-indicator u-display--none">
+            Alex is aan het typen<span class="chat-messages__elipsis"><span></span><span></span><span></span></span>
+        </div>
+    </article>
+
+    <article class="chat__wrapper">
+        <form class="chat__input">
+            <input class="chat__input__field" type="text" placeholder="geef hier je antwoord" autofocus="true">
+            <button class="chat__input__send-button" disabled="disabled">stuur</button>
+        </form>
+    </article>
+    <script src="js/communicator.js"></script>
+    <script src="js/response.js"></script>
+    <script src="js/chat.js"></script>
+</body>
+</html>
