@@ -12,18 +12,17 @@
         <h1 class="chat-header__caption">Dokter intake</h1>
     </header>
 
-    <article class="chat-messages">
-        <ol class="chat-messages__log">
-
-        </ol>
-        <div class="chat-messages__typing-indicator u-display--none">
-            Alex is aan het typen<span class="chat-messages__elipsis"><span></span><span></span><span></span></span>
-        </div>
-    </article>
+    <ol class="chat-messages__log">
+        <li class="chat-messages__message chat-messages__typing-indicator u-display--none" data-incoming="true">
+            <div class="chat-messages__bubble">
+                <span class="chat-messages__elipsis"><span></span><span></span><span></span></span>
+            </div>
+        </li>
+    </ol>
 
     <article class="chat__wrapper">
         <form class="chat__input">
-            <input class="chat__input__field" type="text" placeholder="geef hier je antwoord" autofocus="true">
+            <input class="chat__input__field" type="text" placeholder="geef hier je antwoord..." autofocus="true">
             <button class="chat__input__send-button" disabled="disabled">stuur</button>
         </form>
     </article>
