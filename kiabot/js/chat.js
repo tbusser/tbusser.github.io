@@ -151,7 +151,7 @@
 	}
 
 	function showImage(response) {
-		var imageUrl = '<a class="image-link" href="images/help-image.png" target="_blank"><img src="images/help-image.png"/></a>';
+		var imageUrl = '<a class="image-link" href="images/' + response + '" target="_blank"><img src="images/' + response + '"/></a>';
 		logMessage(imageUrl, true);
 	}
 	/* == CHAT FLOW ========================================================= */
@@ -167,7 +167,11 @@
 			break;
 
 		case 'show-image':
-			showImage(response);
+			showImage('help-image.png');
+			break;
+
+		case 'show-image-2':
+			showImage('image2.png');
 			break;
 		}
 	}

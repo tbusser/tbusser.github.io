@@ -11,9 +11,7 @@
 			'Dit is het einde van de demonstratie. Bedankt voor je interesse.'
 		],
 		rephraseGeneral : [
-			'Sorry, ik heb je niet goed begrepen. Kan je het anders formuleren?',
-			'Ojee, ik snap je niet. Misschien dat je het anders kan verwoorden?',
-			'Kan je je antwoord anders formuleren? Ik heb nu niet begrepen wat je me wil vertellen.'
+			'Sorry, I didn\'t understand you? Can you please repeat'
 		],
 		start : [
 			'Hallo, ik ben Alex. Voor wie wil je iets vragen, jezelf of iemand anders?',
