@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Chatbot test</title>
+	<link rel="stylesheet" href="css/site.css">
+	<meta name="viewport" content="width=device-width,maximum-scale=1.0,initial-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+	<header class="chat-header">
+		<img class="chat-header__avatar" src="images/KiaBot.svg" alt="">
+		<h1 class="chat-header__caption">
+			Your Kia
+		</h1>
+	</header>
+
+	<ol class="chat-messages__log">
+		<li class="chat-messages__message chat-messages__typing-indicator u-display--none is-hidden" data-incoming="true">
+			<div class="chat-messages__bubble">
+				<span class="chat-messages__elipsis"><span></span><span></span><span></span></span>
+			</div>
+		</li>
+	</ol>
+
+	<article class="chat__wrapper">
+		<form class="chat__input">
+			<input class="chat__input__field" type="text" placeholder="Type your message" autofocus="true">
+			<button class="chat__input__send-button" disabled="disabled"></button>
+		</form>
+	</article>
+	
+
+
+	<script src="js/animated-scroll.js"></script>
+    <script src="js/communicator.js"></script>
+    <script src="js/response.js"></script>
+	<script src="js/cannedResponses.js"></script>
+    <script src="js/chat.js"></script>
+
+
+</body>
+</html>
